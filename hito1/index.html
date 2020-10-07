@@ -1,0 +1,305 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hito 1 - Claudio Scheihing</title>
+  <link rel="icon" href="https://hotemoji.com/images/dl/t/bar-chart-emoji-by-twitter.png">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+ 
+  <div id="info-bg" class="bg">
+    <div class="centered">
+      <h1 id="info-title">Hito 1: Abstracción de datos y tareas</h1>
+      <h2 id="info-course">Visualización de Información</h2>
+      <h3 id="info-name">Claudio Scheihing Cuevas</h2>
+    </div>
+  </div>
+  
+  <div id="content-bg" class="bg">
+    <div class="centered">
+      <p> A continuación se presenta el informe de análisis del <i>dataset</i> <span class="inline-code">police_killings.csv</span>. Considera la abstracción de tareas asociada al problema presentado y la abstracción de los datos presentes en el archivo.</p>
+      <div class="section">
+        <h1>1. Abstracción de tareas</h1>
+        <div class="horizontal-line"></div>
+        <p>Considerando lo expuesto en el problema asociado al <i>dataset</i>, se establecen las siguientes tareas de visualización:</p>
+        <p class="task">1. <b>Descubrir</b> si existe una <b>correlación</b> entre factores socioeconómicos de un condado y su ubicación geográfica (para condados con registros de muertes).</p>
+        <ul>
+          <li>Debido a que se desconoce si la zona geográfica incide en los distintos factores socioeconómicos, se debe descubrir si se está en presencia de una correlación con cada uno de los factores factor.</li>
+          <li>Utilizaría los datos de <span class="inline-code">countyfp, p_income, county_income, nat_bucket, pov, urate, college</span>.</li>
+        </ul>
+        <p class="task">2. <b>Comparar</b> la cantidad de muertes de personas pertenecientes a minorías raciales versus personas blancas, para evidenciar alguna <b>tendencia</b>.</p>
+        <ul>
+          <li>Para evidenciar si es que existe una mayor predisposición a homicidios sobre personas  de una minoría racial (tendencia), se deben comparar sus valores con los de personas blancas.</li>
+          <li>Dentro de los datos que consideraría, se encuentra el atributo <span class="inline-code">raceethnicity</span> (junto con la ocurrencia de la muerte).</li>
+        </ul>
+        <p class="task">3. <b>Descubrir</b> la existencia de fechas que representen <b>partes aisladas</b> (<i>outliers</i>) respecto a la cantidad de muertes registradas.</p>
+        <ul>
+          <li>Debido a que se desconoce si es que hay fechas especiales en las que ocurran más muertes que en otras (<i>outliers</i>), se deben descubrir estas partes aisladas.</li>
+          <li>Dentro de los datos que utilizaría, se encuentra la fecha de la defunción (<span class="inline-code">date</span>). En base a la fecha, derivaría un nuevo atributo, el que correspondería a la efeméride o celebración de ese día (con un valor por <i>default</i> si es que no existiese, como "no"). Este atributo tendría por nombre <span class="inline-code">special-date</span></li>
+        </ul>
+      </div>
+      <br>
+
+      <div class="section">
+      <h1>2. Abstracción de datos</h1>
+      <div class="horizontal-line"></div>
+      <h2>Clasificación de datos (atributos)</h2>
+        <p>Observando los distintos datos del <i>dataset</i> contenido en <span class="inline-code">biopic.csv</span>, se clasifican los siguientes atributos de cada ítem dentro de la tabla.</p>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">name</p>
+            <ul>
+              <li>Categórico, puesto que corresponde a un nombre (no posee un orden intrínseco).</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+          <div class="attr-container">
+            <p class="code">age</p>
+            <ul>
+              <li>Ordenado, puesto a que la edad puede ser ordenada.</li>
+              <li>Cuantitativo, puesto a que las edades soportan operaciones aritméticas y comparaciones exactas entre ellas.</li>
+              <li>Secuencial, ya que las edades crecen en un sólo sentido (y con un mismo significado).</li>
+              <li>No cíclico, puesto que no es un atriburo recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">gender</p>
+            <ul>
+              <li>Categórico, ya que el sexo biológico no posee un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+          <div class="attr-container">
+            <p class="code">raceethnicity</p>
+            <ul>
+              <li>Categórico, ya que la razas o etnicidades de una persona no posee un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">date</p>
+            <ul>
+              <li>Ordenado, ya que las fechas pueden ser ordenadas según cuál ocurrió primero (orden intrínseco).</li>
+              <li>Es ordinal, ya que no existen comparaciones ni operaciones exactas entre fechas (existen entre tiempos transcurridos, no fechas). </li>
+              <li>Es secuencial, ya que las fechas del <i>dataset</i> avanzan en un sólo sentido (no se consideran fechas A.C.).</li>
+              <li>No cíclicas, ya que al considerar sólo un año en particular, las fechas no serán recurrentes.</li>
+            </ul>
+          </div>
+          <div class="attr-container">
+            <p class="code">city</p>
+            <ul>
+              <li>Categórico, ya que los nombres de las ciudades no poseen un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">state</p>
+            <ul>
+              <li>Categórico, ya que los nombres de los estados no poseen un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+          <div class="attr-container">
+            <p class="code">latitude</p>
+            <ul>
+              <li>Ordenado, ya que las latitudes pueden ser ordenadas (bajo un orden intrínseco).</li>
+              <li>Cuantitativo, ya que existen comparaciones exactas entre dos latitudes.</li>
+              <li>Es divergente, ya que la escala aumenta en dos sentidos (desde la línea del Ecuador).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">longitude</p>
+            <ul>
+              <li>Ordenado, ya que las longitudes pueden ser ordenadas (bajo un orden intrínseco).</li>
+              <li>Cuantitativo, ya que existen comparaciones exactas entre dos longitudes.</li>
+              <li>Es divergente, ya que la escala aumenta en dos sentidos (desde el meridiano cero).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+          <div class="attr-container">
+            <p class="code">county_fp</p>
+            <ul>
+              <li>Categórico, ya que a pesar de ser un número entero, no existe un orden intrínseco para el identificador de un condado</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">cause</p>
+            <ul>
+              <li>Categórico, ya que las causas de muerte no poseen un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+          <div class="attr-container">
+            <p class="code">armed</p>
+            <ul>
+              <li>Categórico, ya que las categorías de armas no poseen un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">share_white</p>
+            <ul>
+              <li>Ordenado, ya que el porcentaje de población blanca posee un orden intrínseco.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+          </div>
+
+          <div class="attr-container">
+            <p class="code">share_black</p>
+            <ul>
+              <li>Ordenado, ya que el porcentaje de población negra posee un orden intrínseco.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">share_hispanic</p>
+            <ul>
+              <li>Ordenado, ya que el porcentaje de población latina posee un orden intrínseco.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+
+          <div class="attr-container">
+            <p class="code">p_income</p>
+            <ul>
+              <li>Ordenado, ya que los ingresos personales poseen un orden intrínseco, por lo que las medianas pueden ordenarse bajo el mismo criterio.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">county_income</p>
+            <ul>
+              <li>Ordenado, ya que los ingresos familiares poseen un orden intrínseco, por lo que las medianas pueden ordenarse bajo el mismo criterio.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+
+          <div class="attr-container">
+            <p class="code">county_income</p>
+            <ul>
+              <li>Ordenado, ya que los ingresos familiares poseen un orden intrínseco, por lo que las medianas pueden ordenarse bajo el mismo criterio.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">nat_bucket</p>
+            <ul>
+              <li>Ordenado, ya que los quintiles pueden ser ordenados de mayor a menor.</li>
+              <li>Ordinal, ya que los quintiles no poseen una comparación ni operación aritmética exacta.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+
+          <div class="attr-container">
+            <p class="code">pov</p>
+            <ul>
+              <li>Ordenado, ya que los porcentajes de pobreza poseen un orden intrínseco, por lo que las medianas pueden ordenarse bajo el mismo criterio.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">urate</p>
+            <ul>
+              <li>Ordenado, ya que las proporciones de desempleo poseen un orden intrínseco, por lo que las medianas pueden ordenarse bajo el mismo criterio.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+
+          <div class="attr-container">
+            <p class="code">college</p>
+            <ul>
+              <li>Ordenado, ya que las proporciones de escolaridad poseen un orden intrínseco, por lo que las medianas pueden ordenarse bajo el mismo criterio.</li>
+              <li>Cuantitativo, ya que hay comparaciones y operaciones aritméticas exactas entre los datos.</li>
+              <li>Secuencial, ya que los datos crecen en un solo sentido (con un solo significado relacionado a la escala).</li>
+              <li>No cíclico, puesto que no es un atributo temporal o recurrente.</li>
+            </ul>
+          </div>
+        </div>
+        <p>Analizando los datos <b>derivados</b>, se obtienen las siguientes clasificaciones:</p>
+        <div class="row">
+          <div class="attr-container">
+            <p class="code">special-date</p>
+            <ul>
+              <li>Categérico, ya que los nombres de las festividades o efémerides no poseen un orden intrínseco.</li>
+              <li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li>
+              <li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li>
+              <li>No cíclicas, ya que al considerar sólo un año en particular, las fechas no serán recurrentes.</li>
+          </div>
+
+          
+        </div>
+      </div>
+
+      <h2>Clasificación del <i>dataset</i></h2>
+      <p>El <i>dataset</i> contenido en el archivo <span class="inline-code">police_killings.csv</span> es de tipo <b>tabular o tabla</b> , ya que contiene una lista de varios ítemes (filas) con distintos atributos (ordenados en columnas diferentes). También puede ser considerado como <b>geométrico</b>, al poseer datos relacionados con la ubicación de la muerte.</p>
+      <p>En cuanto a su dinamismo, este <i>dataset</i> puede clasificarse como <b>estático</b>. Esto se debe a que nos se incluirán datos a través de la utilización e interacción de les usuaries ni se contabilizarán más muertes dentro del año 2015.</p>
+      <p>Respecto a los tipos de datos singulares presentes en el <i>dataset</i>, se tienen datos del tipo <b>ítem</b> (cada muerte registrada, representada como una fila de la tabla) y del tipo <b>atributo</b> (información o características asociadas a la muerte y su contexto). Además, se tiene la presencia de datos de tipo <b>posición</b> (latitud y longitud del donde ocurrió la muerte).</p>
+      <p>Finalmente, se tiene que este <i>dataset</i> no posee datos <b>llave</b>, ya que no hay ninguno sea único para cada ítem de la tabla. Luego de un primer acercamiento al <i>dataset</i>, se puede pensar que el nombre de una persona es un atributo llave, pero puede ocurrir un alcance de nombre entre dos difuntos. A pesar de este hecho, revisaría el <i>dataset</i> y verificaría que no hubiese un nombre repetido (muy probable), en cuyo caso utilizaría el <b>atributo <span class="inline-code">name</span> como llave.</b></p>
+    </div>
+  </div>
+  <div id="footer-bg" class="bg">
+    <p id="footer-title">Hito 1: Abstracción de datos y tareas</p>
+    <p id="footer-name">Claudio Scheihing Cuevas</p>
+  </div>
+  
+</body>
+</html>
