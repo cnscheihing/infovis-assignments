@@ -5,6 +5,8 @@ const globalData = {
   virginica: [],
 }
 
+var globalMeans;
+
 const dataParsing = (data) => ({
     sepalLength: parseFloat(data.sepalLength),
     sepalWidth: parseFloat(data.sepalWidth),
@@ -40,15 +42,19 @@ const getMeans = (data) => {
   return means;
 }
 
+// DROPDOWN
+const dropdown = document.getElementById("type-option");
+dropdown.addEventListener("change", (event) => {
+  joinData(globalMeans, event.target.value);
+});
+
 // DATA VIZ
-const WIDTH = 800;
-const HEIGHT = 500;
+const WIDTH = 600;
+const HEIGHT = 400;
 const svg = d3.select("#viz-container")
               .append("svg").attr("width", WIDTH).attr("height", HEIGHT);
 const sepalG = svg.append("g").attr("id", "sepal-g");
 const petalG = svg.append("g").attr("id", "petal-g");
-
-
 
 function joinData (means, species) {
   const data = [means[species], means[species], means[species]];
@@ -85,42 +91,6 @@ d3.json("iris.json", dataParsing)
   .then((data) => {
     const means = getMeans(data);
     console.log(means);
-    joinData(means, "versicolor");
+    globalMeans = means;
+    joinData(means, "setosa");
   })
-  // .catch((error) => console.log(error));
-  // .catch((error) => alert("Error al leer archivo"));
-
-console.log(globalData);
-
-// const means = {
-//   setosa: [
-//     {
-//       sepalLength: d3.mean(globalData.setosa, d => (d.sepalLength)),
-//       sepalWidth: d3.mean(globalData.setosa, d => (d.sepalWidth))
-//     },
-//     {
-//       petalLength: d3.mean(globalData.setosa, d => (d.petalLength)),
-//       petalWidth: d3.mean(globalData.setosa, d => (d.petalWidth)),
-//     }
-//   ],
-//   versicolor: [
-//     {
-//       sepalLength: d3.mean(globalData.versicolor, d => (d.sepalLength)),
-//       sepalWidth: d3.mean(globalData.versicolor, d => (d.sepalWidth))
-//     },
-//     {
-//       petalLength: d3.mean(globalData.versicolor, d => (d.petalLength)),
-//       petalWidth: d3.mean(globalData.versicolor, d => (d.petalWidth)),
-//     }
-//   ],
-//   virginica: [
-//     {
-//       sepalLength: d3.mean(globalData.virginica, d => (d.sepalLength)),
-//       sepalWidth: d3.mean(globalData.virginica, d => (d.sepalWidth))
-//     },
-//     {
-//       petalLength: d3.mean(globalData.virginica, d => (d.petalLength)),
-//       petalWidth: d3.mean(globalData.virginica, d => (d.petalWidth)),
-//     }
-//   ],
-// };
