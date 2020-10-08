@@ -1,0 +1,80 @@
+/* CONTAINERS */
+body {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* background-color: #fee9ea; */
+  font-family: 'Roboto';
+  color: #48214e;
+}
+
+.centered {
+  width: 70vw;
+}
+
+.bg {
+  margin: 0 auto;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+#info-container {
+  background-color: #fee9ea;
+  padding-bottom: 30;
+  
+}
+
+#viz-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#svg-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#sepal-legend {
+  width: 12;
+  height: 12;
+  border-radius: 100%;
+  background-color: #F1BCD3;
+}
+
+#petal-legend {
+  width: 12;
+  height: 12;
+  border-radius: 100%;
+  background-color: #C3ABCA;
+}
+
+#legend {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+/* TEXT */
+#title {
+  font-family: 'Passion One', cursive;
+  color: #886eaa;
+  font-size: 80;
+  margin-bottom: 0;
+}
+
+#name {
+  /* font-family: 'Abril Fatface', cursive; */
+  color: #48214e;
+  font-size: 25;
+  margin: 0;
+
+}
+
+.text-legend {
+  margin-top: 0;
+  margin-right: 40;
+  margin-left: 10;
+}

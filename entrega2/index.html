@@ -3,29 +3,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Entrega 2 - Visualización de Información</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Passion+One&family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Entrega 2</h1>
-  <!-- <svg> -->
-    <!-- <polygon fill="red" points="200,10 250,190 160,210" /> -->
-    <!-- <ellipse rx="131.76000000000002" ry="59.48" cx="400" cy="250" fill="rgb(255, 0, 0, 0.5)" transform="rotate(0 0 0)"></ellipse> -->
-  <!-- </svg> -->
-  <h2>Visualización</h2>
-  <div id="viz-container"></div>
-  <select name="type-option" id="type-option">
-    <option value="setosa">Setosa</option>
-    <option value="versicolor">Versicolor</option>
-    <option value="virginica">Virgínica</option>
-  </select>
-  <h2>Descripción del proceso</h2>
-  <h3>Cargar los datos</h3>
-  <ul>
-    <li>Primero, se definió la función para parsear cada dato, devolviendo un objeto con números décimales para los valores numéricos.</li>
-    <li>Luego se definió un objeto, el cual contiene cada especie como llave y una lista de los datos asociados a la especie (objetos mencionados en punto anterior) </li>
-    <li>Se definió una función para obtener los promedios, la cual usa el método d3.mean</li>
-    <li>Se carga la función join de datos</li>
-  </ul>
-  <h3>Visualización</h3>
+  <div id="info-container" class="bg">
+    <div class="centered">
+      <h1 id="title">Visualización de flor Iris</h1>
+      <p id="name">Claudio Scheihing Cuevas</p>
+      <div id="viz-container">
+        <div id="svg-container"></div>
+        <div id="legend">
+          <div id="sepal-legend"></div>
+          <p class="text-legend">Sépalo    </p>
+          <div id="petal-legend"></div>
+          <p class="text-legend">Pétalo</p>
+        </div>
+        <select name="type-option" id="type-option">
+          <option value="setosa">Setosa</option>
+          <option value="versicolor">Versicolor</option>
+          <option value="virginica">Virgínica</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="bg">
+    <div class="centered">
+      <h2>Descripción del proceso</h2>
+      <h3>Glifos</h3>
+      <p>
+        El glifo que ideé consiste en 2 círculos que representan el área total de cada tipo de flor. Dentro de cada círculo se dibuja otro círculo, cuya área representa el área que utilza cada tipo de pétalo o sépalo. El círculo de la izquierda
+        corresponde al sépalo, mientras que el de la izquierda corresponde al pétalo. Finalmente, se agregan elementos gráficos que generan más contraste visual y agregan una connotación de flor o planta 
+        (con el objetivo de dar contexto y aportar a una eventual narrativa).
+      </p>
+      <p>También decidí implementar el glifo de mostrado en el enunciado, puesto que me gustó bastante. Utilicé los mismos colores del glifo anterior para ser consiste y lograr que funcionen en conjunto.</p>
+      <h3>Cargar los datos</h3>
+      <ul>
+        <li>Primero, se definió la función para parsear cada dato, devolviendo un objeto con números decimales para los valores numéricos.</li>
+        <li>Luego se introdujo cada uno de estos objetos en un arrglo distinto, según el tipo de flor.</li>
+        <li>Se definió una función para obtener los promedios, la cual usa el método d3.mean. Esta retorna un objeto, el que contiene cada tipo de flor "promedio". Estos son los datos que se visualizan.</li>
+        <li>Se cargan la funciones de join de datos para cada glifo (se explican a continuación).</li>
+      </ul>
+      <h3>Visualización</h3>
+      <ul>
+        <li>Para la visualización, utilicé el join de datos visto en clase.</li>
+        <li>Para las elipses, cambié los atributos de los radios, el color de fondo y su orientación (mediante el atributo transform, seteado con rotate (···) )</li>
+        <li>Para el glifo de los círculos, además de lo anterior agregué dos líneas con el método d3.line().</li>
+        <li>Finalmente implementé el dropdown utilizando los métodos getElementById y addEventListener.</li>
+      </ul>
+      <h3>Dificultades</h3>
+      <ul>
+        <li>La primera dificultad fue que al hacer el glifo que utilza elipses, tenía sólo dos datos y quería hacer 3 elipses por cada uno (en vez de un elemento HTML por dato). Lo que encontré investigando consideraban funciones
+          de d3 que no utilizaban la dinámica del join de datos (que era lo que se espera para la tarea). Finalmente hice un arreglo con la variable repetida 3 veces, pero me habría gustado hacerlo de una manera menos hardcodeada.
+        </li>
+        <li>También me pasó que por tiempo, no pude idear o investigar algún sistema que permitiera manejar de mejor manera las posiciones dentro de los glifos. Tuve que definir un punto arbitrario y desde ahí calcular el resto, utilizando el índice del dato y distnacias arbitrarias. No se si exista un método en d3 para manejar esto.</li>
+        <li>Por tiempo, no pude determinar por qué Google Chrome muestra las tipografías de Google Fonts más gruesas de lo que son (por si le correctore sabe).</li>
+      </ul>
+    </div>
+  </div>
+    
+  
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="script.js"></script>
 </body>
