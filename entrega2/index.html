@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrega 2 - Visualización de Información</title>
+</head>
+<body>
+  <h1>Entrega 2</h1>
+  <!-- <svg> -->
+    <!-- <polygon fill="red" points="200,10 250,190 160,210" /> -->
+    <!-- <ellipse rx="131.76000000000002" ry="59.48" cx="400" cy="250" fill="rgb(255, 0, 0, 0.5)" transform="rotate(0 0 0)"></ellipse> -->
+  <!-- </svg> -->
+  <h2>Visualización</h2>
+  <div id="viz-container"></div>
+  
+  <h2>Descripción del proceso</h2>
+  <h3>Cargar los datos</h3>
+  <ul>
+    <li>Primero, se definió la función para parsear cada dato, devolviendo un objeto con números décimales para los valores numéricos.</li>
+    <li>Luego se definió un objeto, el cual contiene cada especie como llave y una lista de los datos asociados a la especie (objetos mencionados en punto anterior) </li>
+    <li>Se definió una función para obtener los promedios, la cual usa el método d3.mean</li>
+    <li>Se carga la función join de datos</li>
+  </ul>
+  <h3>Visualización</h3>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
