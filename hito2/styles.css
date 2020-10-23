@@ -2,8 +2,20 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin-left: 170px;
 }
 
 .card-container {
   margin: 5;
+}
+
+#sidebar {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
 }
