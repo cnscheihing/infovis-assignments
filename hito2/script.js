@@ -147,11 +147,15 @@ const cardDrawer = (dataArray, containerId) => {
                 .attr("stroke", "lightgrey");
               
               svg.on("mouseenter", (_, d) => {
-                svg.filter(datum => datum.club == d.club).style("background-color", "#28ABE3");
+                if (d.id != "average") {
+                  svg.filter(datum => datum.club == d.club).style("background-color", "#28ABE3");
+                }
               });
             
               svg.on("mouseleave", (_, d) => {
-                svg.filter(datum => datum.club == d.club).style("background-color", d => cardColor(d.rating));
+                if (d.id != "average") {
+                  svg.filter(datum => datum.club == d.club).style("background-color", d => cardColor(d.rating));
+                }
               });
             },
             update => update,
