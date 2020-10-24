@@ -1,26 +1,27 @@
 // DATA PARSING
+var globalData;
 let id = 0;
 const dataParsing = (data) => {
   id++;
-    return ({
-      id: `player${id}`, 
-      position: data.POSITION,
-      rating: data.RATING,
-      club: data.CLUB,
-      stats:{
-        PAC: parseInt(data.PACE),
-        SHO: parseInt(data.SHOOTING),
-        PAS: parseInt(data.PASSING),
-        DRI: parseInt(data.DRIBBLING),
-        DEF: parseInt(data.DEFENDING),
-        PHY: parseInt(data.PHYSICAL),
-      },
-      info: [
-        {key: "name", value: data.NAME},
-        {key: "club", value: data.CLUB},
-        {key: "league", value: data.LEAGUE},
-        {key: "rating", value: data.RATING},
-      ]
+  return ({
+    id: `player${id}`, 
+    position: data.POSITION,
+    rating: data.RATING,
+    club: data.CLUB,
+    stats:{
+      PAC: parseInt(data.PACE),
+      SHO: parseInt(data.SHOOTING),
+      PAS: parseInt(data.PASSING),
+      DRI: parseInt(data.DRIBBLING),
+      DEF: parseInt(data.DEFENDING),
+      PHY: parseInt(data.PHYSICAL),
+    },
+    info: [
+      {key: "name", value: data.NAME},
+      {key: "club", value: data.CLUB},
+      {key: "league", value: data.LEAGUE},
+      {key: "rating", value: data.RATING},
+    ]
   }
 )}
 
@@ -29,7 +30,7 @@ const CARD_WIDTH = 200;
 const CARD_HEIGHT = 1.618 * CARD_WIDTH;
 const CHART_CENTER_X =  CARD_WIDTH / 2;
 const CHART_CENTER_Y =  (2/3) * CARD_HEIGHT;
-const MAX_RADIUS = (1/4) * CARD_HEIGHT;
+const MAX_RADIUS = (1/5) * CARD_HEIGHT;
 
 // SCALE & COORDINATES
 const radialScale = d3.scaleLinear()
@@ -74,8 +75,11 @@ const chartColor = position => {
   else return "#FDD703";
 };
 
+// CARD DRAWER
 const cardDrawer = (dataArray, containerId) => {
-  const divs = d3.select(`#${containerId}`)
+  d3.select(`#${containerId}`).selectAll("div").remove();
+  
+  d3.select(`#${containerId}`)
     .selectAll("div")
     .data(dataArray)
     .join(
@@ -87,6 +91,7 @@ const cardDrawer = (dataArray, containerId) => {
             .attr("id", (d) => (`${d.id}_svg`))
             .attr("width", CARD_WIDTH)
             .attr("height", CARD_HEIGHT)
+            .attr("class", "card-svg")
             .style("background-color", d => cardColor(d.rating));
         
         svg.append("g")
@@ -103,7 +108,7 @@ const cardDrawer = (dataArray, containerId) => {
         gChart.append("circle")
           .attr("cx", CHART_CENTER_X)
           .attr("cy", CHART_CENTER_Y)
-          .attr("r", MAX_RADIUS + 10)
+          .attr("r", MAX_RADIUS + 20)
           .attr("fill", "white");
 
         // stats polygon
@@ -146,7 +151,9 @@ const cardDrawer = (dataArray, containerId) => {
               svg.on("mouseleave", (_, d) => {
                 svg.filter(datum => datum.club == d.club).style("background-color", d => cardColor(d.rating));
               });
-            }
+            },
+            update => update,
+            exit => exit.remove(),
           );     
       },
       update => update,
@@ -154,7 +161,7 @@ const cardDrawer = (dataArray, containerId) => {
     );
 }
 
-// average card
+// AVERAGE CARD
 const getAverageStats = (dataArray) => (
   {
     id: "average",
@@ -172,10 +179,78 @@ const getAverageStats = (dataArray) => (
   }
 );
 
+// BONUS: FILTERS
+const dropdownLeagueFilter = (dataArray, value) => {
+  if (value === "Todos") return dataArray;
+  return dataArray.filter(data => data.info[2].value === value);
+}
+
+const dropdownClubFilter = (dataArray, value) => {
+  if (value === "Todos") return dataArray;
+  return dataArray.filter(data => data.info[1].value === value);
+}
+
+const minRangeFilter = (dataArray, value) => {
+  return dataArray.filter(data => parseInt(data.rating) >= value);
+}
+
+const maxRatingFilter = (dataArray, value) => {
+  return dataArray.filter(data => parseInt(data.rating) <= value);
+}
+
+const getClubs = dataArray => {
+  return ["Todos", ...new Set(dataArray.map((d) => d.info[1].value))];
+}
+
+const getLeagues = dataArray => {
+  return ["Todos", ...new Set(dataArray.map((d) => d.info[2].value))];
+}
+
+const dropdownLeagueConstructor = dataArray => {
+  const leagues = getLeagues(dataArray);
+  const select = d3.select("#league-filter");
+  select.selectAll("option")
+      .data(leagues)
+      .enter()
+      .append("option")
+      .attr("value", d => d)
+      .text(d => d);
+  
+  select.on("change", function(){
+    console.log(this.value);
+    const filteredData = dropdownLeagueFilter(globalData, this.value);
+    cardDrawer(filteredData, "viz-container");
+  });
+
+}
+
+const dropdownClubConstructor = dataArray => {
+  const clubs = getClubs(dataArray);
+  const select = d3.select("#club-filter");
+  select.selectAll("option")
+      .data(clubs)
+      .enter()
+      .append("option")
+      .attr("value", d => d)
+      .text(d => d);
+
+  select.on("change", function(){
+    console.log(this.value);
+    const filteredData = dropdownClubFilter(globalData, this.value);
+    console.log(filteredData);
+    cardDrawer(filteredData, "viz-container");
+
+  });
+}
+
+// DATA LOADING
 d3.csv("fifa_20_data.csv", dataParsing)
   .then((data) => {
+    globalData = data;
     cardDrawer(data, "viz-container");
     const averageStats = getAverageStats(data);
     cardDrawer([averageStats], "player_average_div");
+    dropdownLeagueConstructor(data);
+    dropdownClubConstructor(data);
   })
   .catch((error) => console.log(error));
