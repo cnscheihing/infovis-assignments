@@ -2,25 +2,26 @@
 let id = 0;
 const dataParsing = (data) => {
   id++;
-  return ({
-  id: `player${id}`, 
-  position: data.POSITION,
-  rating: data.RATING,
-  stats:{
-    PAC: parseInt(data.PACE),
-    SHO: parseInt(data.SHOOTING),
-    PAS: parseInt(data.PASSING),
-    DRI: parseInt(data.DRIBBLING),
-    DEF: parseInt(data.DEFENDING),
-    PHY: parseInt(data.PHYSICAL),
-  },
-  info: [
-    {key: "name", value: data.NAME},
-    {key: "club", value: data.CLUB},
-    {key: "league", value: data.LEAGUE},
-    {key: "rating", value: data.RATING},
-  ]
-}
+    return ({
+      id: `player${id}`, 
+      position: data.POSITION,
+      rating: data.RATING,
+      club: data.CLUB,
+      stats:{
+        PAC: parseInt(data.PACE),
+        SHO: parseInt(data.SHOOTING),
+        PAS: parseInt(data.PASSING),
+        DRI: parseInt(data.DRIBBLING),
+        DEF: parseInt(data.DEFENDING),
+        PHY: parseInt(data.PHYSICAL),
+      },
+      info: [
+        {key: "name", value: data.NAME},
+        {key: "club", value: data.CLUB},
+        {key: "league", value: data.LEAGUE},
+        {key: "rating", value: data.RATING},
+      ]
+  }
 )}
 
 // CONSTANT VARIABLES: DIMENSIONS
@@ -31,7 +32,7 @@ const CHART_CENTER_Y =  (2/3) * CARD_HEIGHT;
 const MAX_RADIUS = (1/4) * CARD_HEIGHT;
 
 // SCALE & COORDINATES
-const radialScale = d3.scaleRadial()
+const radialScale = d3.scaleLinear()
                       .domain([1, 99])
                       .range([1, MAX_RADIUS]);
 
@@ -55,7 +56,8 @@ const getSpiderPath = stats => {
 };
 
 const cardColor = rating => {
-  if (rating >= 75) return "#FDD703";
+  if (rating == 0) return "#DB3340";
+  else if (rating >= 75) return "#FDD703";
   else if (rating >= 65) return "#C0C0C0";
   else return "#CD7F33";
 };
@@ -66,13 +68,14 @@ const chartColor = position => {
     midfielder: ["CM", "CAM", "CDM", "LM", "RM"],
     forward: ["LF", "CF", "RF", "ST", "RW", "LW"]
   };
-  if (categories.defense.includes(position)) return "blue";
-  else if (categories.midfielder.includes(position)) return "green";
-  else return "red"; 
+  if (categories.defense.includes(position)) return "#28ABE3";
+  else if (categories.midfielder.includes(position)) return "#1FDA9A";
+  else if (categories.forward.includes(position)) return "#DB3340"; 
+  else return "#FDD703";
 };
 
-const cardDrawer = (dataArray) => {
-  d3.select("#viz-container")
+const cardDrawer = (dataArray, containerId) => {
+  const divs = d3.select(`#${containerId}`)
     .selectAll("div")
     .data(dataArray)
     .join(
@@ -135,6 +138,14 @@ const cardDrawer = (dataArray) => {
                 .attr("x2", (_, i) => getPolarCoordinates(getAngleFromIndex(i + 3), 99).x)
                 .attr("y2", (_, i) => getPolarCoordinates(getAngleFromIndex(i + 3), 99).y)
                 .attr("stroke", "grey");
+              
+              svg.on("mouseenter", (_, d) => {
+                svg.filter(datum => datum.club == d.club).style("background-color", "#28ABE3");
+              });
+            
+              svg.on("mouseleave", (_, d) => {
+                svg.filter(datum => datum.club == d.club).style("background-color", d => cardColor(d.rating));
+              });
             }
           );     
       },
@@ -143,8 +154,28 @@ const cardDrawer = (dataArray) => {
     );
 }
 
+// average card
+const getAverageStats = (dataArray) => (
+  {
+    id: "average",
+    rating: 0,
+    position: "average",
+    info: [{key: "name", value: "RESUMEN"}],
+    stats: {
+      PAC: d3.mean(dataArray, d => (d.stats.PAC)),
+      SHO: d3.mean(dataArray, d => (d.stats.SHO)),
+      PAS: d3.mean(dataArray, d => (d.stats.PAS)),
+      DRI: d3.mean(dataArray, d => (d.stats.DRI)),
+      DEF: d3.mean(dataArray, d => (d.stats.DEF)),
+      PHY: d3.mean(dataArray, d => (d.stats.PHY)),
+    }
+  }
+);
+
 d3.csv("fifa_20_data.csv", dataParsing)
   .then((data) => {
-    cardDrawer(data);
+    cardDrawer(data, "viz-container");
+    const averageStats = getAverageStats(data);
+    cardDrawer([averageStats], "player_average_div");
   })
   .catch((error) => console.log(error));
