@@ -190,7 +190,7 @@ const dropdownClubFilter = (dataArray, value) => {
   return dataArray.filter(data => data.info[1].value === value);
 }
 
-const minRangeFilter = (dataArray, value) => {
+const minRatingFilter = (dataArray, value) => {
   return dataArray.filter(data => parseInt(data.rating) >= value);
 }
 
@@ -217,7 +217,6 @@ const dropdownLeagueConstructor = dataArray => {
       .text(d => d);
   
   select.on("change", function(){
-    console.log(this.value);
     const filteredData = dropdownLeagueFilter(globalData, this.value);
     cardDrawer(filteredData, "viz-container");
   });
@@ -235,21 +234,30 @@ const dropdownClubConstructor = dataArray => {
       .text(d => d);
 
   select.on("change", function(){
-    console.log(this.value);
     const filteredData = dropdownClubFilter(globalData, this.value);
-    console.log(filteredData);
     cardDrawer(filteredData, "viz-container");
 
   });
 }
+
+d3.select("#min-range-filter")
+  .on("input", function(){
+    const filteredData = minRatingFilter(globalData, this.value);
+    cardDrawer(filteredData, "viz-container");
+  });
+
+d3.select("#max-range-filter")
+  .on("input", function(){
+    const filteredData = maxRatingFilter(globalData, this.value);
+    cardDrawer(filteredData, "viz-container");
+  })
 
 // DATA LOADING
 d3.csv("fifa_20_data.csv", dataParsing)
   .then((data) => {
     globalData = data;
     cardDrawer(data, "viz-container");
-    const averageStats = getAverageStats(data);
-    cardDrawer([averageStats], "player_average_div");
+    cardDrawer([getAverageStats(data)], "player_average_div");
     dropdownLeagueConstructor(data);
     dropdownClubConstructor(data);
   })
