@@ -65,7 +65,7 @@ const cardColor = rating => {
 
 const chartColor = position => {
   const categories = {
-    defense: ["CB", "RB", "LWB", "RWB"],
+    defense: ["CB", "RB", "LB", "LWB", "RWB"],
     midfielder: ["CM", "CAM", "CDM", "LM", "RM"],
     forward: ["LF", "CF", "RF", "ST", "RW", "LW"]
   };
@@ -99,9 +99,10 @@ const cardDrawer = (dataArray, containerId) => {
             .selectAll("text")
             .data((d) => d.info)
             .join( enter => enter.append("text") )
-            .text(d => d.value)
-            .attr("class", d => d.key)
-            .attr("y", (_, i) => 15 * (i + 1));
+            .text(d => d.key == "rating" ? `Rating: ${d.value}` : d.value)
+            .attr("class", d => `${d.key} info-text`)
+            .attr("y", (_, i) => 15 * (i + 1) + 15)
+            .attr("x", 15);
         
         const gChart = svg.append("g").attr("id", (d) => `${d.id}_chart`);
         // background circle
@@ -123,10 +124,11 @@ const cardDrawer = (dataArray, containerId) => {
             enter => {
               // labels
               enter.append("text")
-                .attr("x", (_, i) => getPolarCoordinates(getAngleFromIndex(i), 99).x)
-                .attr("y", (_, i) => getPolarCoordinates(getAngleFromIndex(i), 99).y)
+                .attr("x", getPolarCoordinates(getAngleFromIndex(0), 99).x - 7)
+                .attr("y", getPolarCoordinates(getAngleFromIndex(0), 99).y - 7)
+                .attr("transform", (_, i) => `rotate (${(-60)*i} ${CHART_CENTER_X} ${CHART_CENTER_Y})`)
                 .text(d => d)
-                .style("font-size", 8);
+                .attr("class", "chart-label");
               
               // outer line
               enter.append("line")
@@ -134,7 +136,7 @@ const cardDrawer = (dataArray, containerId) => {
                 .attr("y1", (_, i) => getPolarCoordinates(getAngleFromIndex(i), 99).y)
                 .attr("x2", (_, i) => getPolarCoordinates(getAngleFromIndex(i + 1), 99).x)
                 .attr("y2", (_, i) => getPolarCoordinates(getAngleFromIndex(i + 1), 99).y)
-                .attr("stroke", "grey");
+                .attr("stroke", "lightgrey");
               
               // axes
               enter.append("line")
@@ -142,7 +144,7 @@ const cardDrawer = (dataArray, containerId) => {
                 .attr("y1", (_, i) => getPolarCoordinates(getAngleFromIndex(i), 99).y)
                 .attr("x2", (_, i) => getPolarCoordinates(getAngleFromIndex(i + 3), 99).x)
                 .attr("y2", (_, i) => getPolarCoordinates(getAngleFromIndex(i + 3), 99).y)
-                .attr("stroke", "grey");
+                .attr("stroke", "lightgrey");
               
               svg.on("mouseenter", (_, d) => {
                 svg.filter(datum => datum.club == d.club).style("background-color", "#28ABE3");
@@ -167,7 +169,15 @@ const getAverageStats = (dataArray) => (
     id: "average",
     rating: 0,
     position: "average",
-    info: [{key: "name", value: "RESUMEN"}],
+    info: dataArray.length > 0 ? [
+      {key: "name", value: "Resumen de Jugadores"},
+      {key:"", value: `Velocidad: ${parseInt(d3.mean(dataArray, d => (d.stats.PAC)))}`},
+      {key:"", value: `Tiros: ${parseInt(d3.mean(dataArray, d => (d.stats.SHO)))}`},
+      {key:"", value: `Pases: ${parseInt(d3.mean(dataArray, d => (d.stats.PAS)))}`},
+      {key:"", value: `Regate: ${parseInt(d3.mean(dataArray, d => (d.stats.DRI)))}`},
+      {key:"", value: `Defensa: ${parseInt(d3.mean(dataArray, d => (d.stats.DEF)))}`},
+      {key:"", value: `Físico: ${parseInt(d3.mean(dataArray, d => (d.stats.PHY)))}`},
+    ] : [{key: "name", value: "Resumen de Jugadores"}, {key:"", value:"No hay jugadores"}],
     stats: {
       PAC: d3.mean(dataArray, d => (d.stats.PAC)),
       SHO: d3.mean(dataArray, d => (d.stats.SHO)),
@@ -218,7 +228,9 @@ const dropdownLeagueConstructor = dataArray => {
   
   select.on("change", function(){
     const filteredData = dropdownLeagueFilter(globalData, this.value);
+    d3.select("#total-cards").text(`Cantidad de jugadores: ${filteredData.length}`);
     cardDrawer(filteredData, "viz-container");
+    cardDrawer([getAverageStats(filteredData)], "player_average_div");
   });
 
 }
@@ -235,30 +247,39 @@ const dropdownClubConstructor = dataArray => {
 
   select.on("change", function(){
     const filteredData = dropdownClubFilter(globalData, this.value);
+    d3.select("#total-cards").text(`Cantidad de jugadores: ${filteredData.length}`);
     cardDrawer(filteredData, "viz-container");
-
+    cardDrawer([getAverageStats(filteredData)], "player_average_div");
   });
 }
 
 d3.select("#min-range-filter")
   .on("input", function(){
+    d3.select("#min-label").text(`Rating mínimo: ${this.value}`);
     const filteredData = minRatingFilter(globalData, this.value);
+    d3.select("#total-cards").text(`Cantidad de jugadores: ${filteredData.length}`);
     cardDrawer(filteredData, "viz-container");
+    cardDrawer([getAverageStats(filteredData)], "player_average_div");
   });
 
 d3.select("#max-range-filter")
   .on("input", function(){
+    d3.select("#max-label").text(`Rating máximo: ${this.value}`);
     const filteredData = maxRatingFilter(globalData, this.value);
+    d3.select("#total-cards").text(`Cantidad de jugadores: ${filteredData.length}`);
     cardDrawer(filteredData, "viz-container");
+    cardDrawer([getAverageStats(filteredData)], "player_average_div");
   })
 
 // DATA LOADING
 d3.csv("fifa_20_data.csv", dataParsing)
   .then((data) => {
     globalData = data;
+    d3.select("#total-cards").text(`Cantidad de jugadores: ${data.length}`);
     cardDrawer(data, "viz-container");
     cardDrawer([getAverageStats(data)], "player_average_div");
     dropdownLeagueConstructor(data);
     dropdownClubConstructor(data);
+    
   })
   .catch((error) => console.log(error));
