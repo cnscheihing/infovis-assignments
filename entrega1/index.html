@@ -1,0 +1,628 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Entrega 1: Abstracción de datos y tareas</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="54621518-07d5-40d7-a12f-b115bf8aab99" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📊</span></div><h1 class="page-title">Entrega 1: Abstracción de datos y tareas</h1></header><div class="page-body"><hr id="1959c1be-4654-4f17-81ca-12eb316d7ff4"/><h3 id="a360e706-3c1f-4a9d-831b-01d3ec7859a3" class=""><strong>Nombre</strong>: Claudio Scheihing Cuevas</h3><p id="70e81cbb-ea1b-4bb3-b666-ba1c269ed843" class=""><time>@Aug 27, 2020</time> </p><h1 id="69e35270-1233-4d8d-a5d2-57b9d1722352" class="">1. Abstracción de tareas</h1><hr id="1f24ebe6-e6a7-405d-ba1f-b8ee002635a6"/><h2 id="b590e865-0c77-4043-b281-89ab72f46b15" class="">Tareas</h2><p id="f154bf40-5c85-476c-b083-cad5b576e1ce" class="">Considerando el problema particular presentado en relación a este <em>dataset</em> (desigualdad en la <strong>cantidad de películas</strong> producidas según el sexo biológico del rol protagónico), se identifican las siguientes tareas:</p><ol id="ce77a1de-5fbd-49d8-ae05-f145041cb8f8" class="numbered-list" start="1"><li>Comparar cantidad de <em>biopics</em> producidas según sexo biológico.<ul id="bb005be1-8a07-47bf-8510-6f72013cedea" class="bulleted-list"><li>Es necesario poder visualizar la cantidad de películas que se han producido para cada sexo biológico de manera separada para poder evidenciar el grado desigualdad.</li></ul><ul id="a4f32bbf-e38d-4555-8b12-0378f33df871" class="bulleted-list"><li>Dentro de los datos que utilizaría para llevar a cabo esta tarea, utilizaría: <code>title</code> (a modo de identificador) y <code>subject_sex</code>.</li></ul></li></ol><ol id="5837c412-7422-483f-aea5-5092af296920" class="numbered-list" start="2"><li>Comparar cantidad de <em>biopics</em> según sexo biológico a lo largo de los años.<ul id="a35d7c89-f3ab-429f-9a74-b4a42c695b7d" class="bulleted-list"><li>De existir dicha desigualdad, es necesario poder visualizar la cantidad de películas que se han producido para cada sexo biológico en cada año, con el objetivo de comprobar si el grado de desigualdad a disminuido con el correr del tiempo.</li></ul><ul id="4bacf4a5-0ff7-4724-a52f-72dcc95a7fde" class="bulleted-list"><li>Dentro de los datos que utilizaría para llevar a cabo esta tarea, utilizaría: <code>title</code> (a modo de identificador), <code>year_release</code> y <code>subject_sex</code>.</li></ul></li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="a48a8344-b064-4216-ad2a-dc93a5218e49"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Cabe destacar que el grado de desigualdad puede ser visualizado un otros contextos más allá de la cantidad de películas (objetivo descrito en el problema), utilizando datos como <code>box_office</code>, <code>director</code> o <code>country</code> .</div></figure><h1 id="1a6a3154-b4ca-4981-8cbe-f0f4898c9465" class="">2. Abstracción de datos</h1><hr id="f6a6ebc1-5bdc-4103-a0db-ba342d399882"/><h2 id="8cf37b42-c117-4b36-a9cd-94e2aab6c26c" class="">Clasificación de datos (atributos)</h2><p id="5e809059-7448-482d-b3f1-8ded6d0b18b8" class="">Observando los datos del dataset contenido en <code>biopics.csv</code>, se presentan clasifican los siguientes atributos de cada ítem dentro de la tabla:</p><ol id="f3f8696c-bd89-4f1f-bc20-9bfb466c7731" class="numbered-list" start="1"><li><code>title</code><ul id="6ce83cef-da7c-4ea1-8268-cb8cedd64ff8" class="bulleted-list"><li>Categórico, puesto que corresponde a un nombre (no posee un orden intrínseco)</li></ul><ul id="a1d8328a-1544-4eb0-9fa7-f3f8b7427062" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es un dato ordenado).</li></ul><ul id="36c8add7-dc78-498d-99f2-357003cdb47b" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es un dato ordenado).</li></ul><ul id="10e09625-a564-47c1-8bfc-ed6d994d7522" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="cff5022e-80f6-499d-a23b-1f225e670e5c" class="bulleted-list"><li>Valor, puesto que otra película eventualmente podría tener el mismo nombre. Si bien es atributo del tipo valor (por la razón descrita), revisaría el <em>dataset</em> y verificaría que no hay repeticiones, con el objetivo de usar este dato como identificador.</li></ul></li></ol><ol id="bb44911d-242e-40db-97d2-0fe1dfc052d8" class="numbered-list" start="2"><li><code>site</code><ul id="67a3c7ec-975c-412c-83fb-befb5bc33054" class="bulleted-list"><li>Categórico, puesto que corresponde a la url de una página web (no posee un orden intrínseco).</li></ul><ul id="5c405db7-5e89-4399-8f34-e17bf73e5ac2" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="c3eddb9d-af2d-4877-abcf-c66429530f1c" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="ab0885d4-3fbc-4e97-aee8-ab620bac4e91" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="f7803100-4178-4aeb-98c8-aa3a5267832a" class="bulleted-list"><li>Llave, puesto que este valor es único dentro de los datos. Cabe destacar que a pesar de que sea llave, no hace sentido ocuparlo como identificador el ítem.</li></ul></li></ol><ol id="7e7003e3-c21f-464b-81f3-aa73ce63627b" class="numbered-list" start="3"><li><code>country</code><ul id="028de169-2e9b-4359-8d62-0a7363b6431e" class="bulleted-list"><li>Categórico, puesto que corresponde al nombre de un país (no posee un orden intrínseco).</li></ul><ul id="3719efdd-ed61-460a-8f12-e7397a82faf1" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="cdaec274-310e-4bfc-9432-b61f29c211f9" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="44bf9424-1a21-4ad4-b92a-81a44090c19a" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="39532144-4b71-4012-9ca6-0492e2f8fbbd" class="bulleted-list"><li>Valor, puesto que dos películas pueden provenir del mismo país.</li></ul></li></ol><ol id="a40ae428-2349-40e9-b710-5763f4fe361f" class="numbered-list" start="4"><li><code>year_released</code><ul id="dcee9199-689e-4a5e-a633-e4270bf8876e" class="bulleted-list"><li>Ordenado, puesto que los años poseen un orden intrínseco (relacionado al avance del tiempo).</li></ul><ul id="d982f2e3-f60f-4287-a169-4fcbd817c8ef" class="bulleted-list"><li>Ordinal, debido a que a pesar de ser un número entero, al considerar su significado no tiene sentido aplicar operaciones aritméticas (como sumar los años de lanzamiento de dos películas o promediarlos). Tampoco hay una comparación exacta entre dos años. La cantidad de años desde que han transcurrido desde que se estrenó la película podría ser considerada como cuantitativa.</li></ul><ul id="2ac7584b-7bd0-453b-8c3d-a03e9b1bf6c0" class="bulleted-list"><li>Secuencial, ya que sólo pueden tomar valores positivos (sabemos que no existirán películas estrenadas en años A.C.).</li></ul><ul id="581cbc4f-e5a5-4e8f-91be-a663795dcfc6" class="bulleted-list"><li>Valor, debido a que dos películas pueden haber sido estrenadas el mismo año.</li></ul></li></ol><ol id="a3ce386b-aa47-4259-9f57-e22ee50117ed" class="numbered-list" start="5"><li><code>director</code><ul id="eb227e7f-923b-4da6-b03c-4904e550130b" class="bulleted-list"><li>Categórico, puesto que corresponde al nombre de una persona (no posee un orden intrínseco).</li></ul><ul id="8a59b703-c2ac-4068-a386-1475c4790a79" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="d010f1f3-5619-4143-9083-b4ec25e95fba" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="dd87bdf7-d9c6-482f-969d-ec6ad060d18b" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="e44fa062-0aef-455d-9fd4-7a8a95347607" class="bulleted-list"><li>Valor, puesto que dos películas pueden tener el mismo director.</li></ul></li></ol><ol id="251f843f-f3ee-4760-8973-251963c289b5" class="numbered-list" start="6"><li><code>subject</code><ul id="0bd475b4-3a73-4bf4-a7dc-a21426dbc987" class="bulleted-list"><li>Categórico, puesto que corresponde al nombre de una persona (no posee un orden intrínseco).</li></ul><ul id="784fa998-a27e-433f-b99d-6a55549e9697" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="4e53a8a3-ccd5-435f-97f7-175446bf601c" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="0ee1915a-6b10-4c0e-8ad8-e83cddb1e73e" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="c61cd372-b2a0-456f-bfd6-d6731e0472f3" class="bulleted-list"><li>Valor, puesto que dos películas pueden tener a la misma persona como personaje principal.</li></ul></li></ol><ol id="33dc50ad-a084-42db-ba53-a5774bf3abcb" class="numbered-list" start="7"><li><code>type_of_subject</code><ul id="58c1f5ea-0efa-42dc-b368-d88da0ee4423" class="bulleted-list"><li>Categórico, puesto que corresponde a un cualidad o acción (no posee un orden intrínseco).</li></ul><ul id="6bcad63c-a06f-4657-8625-35d52edc962c" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="ce003377-e597-469b-acc3-594c87f3a6e2" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="90345c6d-a03c-4875-9e14-3d96903d5a2a" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="f7bea8e7-9dc1-4a29-bfcc-2023d124357d" class="bulleted-list"><li>Valor, puesto que dos personas pueden ser reconocidas por alguna cualidad o acción de la misma catergoría.</li></ul></li></ol><ol id="88e7dc90-b985-4c63-9c68-fad32235dd16" class="numbered-list" start="8"><li><code>race_known</code><ul id="ce61b289-23dd-4536-8bcf-15aa70f90db7" class="bulleted-list"><li>Categórico, puesto que es un booleano (no posee un orden intrínseco).</li></ul><ul id="26dc34b6-536d-488d-834e-d9375d520a16" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="8e050879-2101-4dab-912a-f0c3bcc45d3a" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="cf09d095-6216-4417-b1a8-cbe1a550cd1c" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="9adf62b8-0339-4e3b-9922-b0bd94f9ab3f" class="bulleted-list"><li>Valor, puesto que más de una película puede tener raza conocida para su protagonista o no.</li></ul></li></ol><ol id="e04c2e5b-abbc-431b-92e0-c2bacfae7762" class="numbered-list" start="9"><li><code>subject_race</code><ul id="8a893de0-7a64-44cc-af88-b0e2d1569abf" class="bulleted-list"><li>Categórico, puesto que corresponde a la raza de una persona (no posee un orden intrínseco).</li></ul><ul id="2830d765-ed36-4351-92bc-cf65a87eb5b7" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="6e1c21b5-ff35-480a-b5c5-c3d8550e71f4" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="f1739237-1b08-46d0-aa8e-f0246c9e5435" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="bf3705a3-48a8-4755-a33c-e9800c0dc8de" class="bulleted-list"><li>Valor, puesto que la raza del protagonista puede repetirse entre las películas.</li></ul></li></ol><ol id="589291d4-3f76-457e-9481-9a741e70e349" class="numbered-list" start="10"><li><code>person_of_color</code><ul id="86906543-e8bb-48f9-996c-9f715f6ca83b" class="bulleted-list"><li>Categórico, puesto que es un booleano (no posee un orden intrínseco).</li></ul><ul id="d2b7237a-2e50-40d8-a235-bb2c3cd362c6" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="cb3c1f62-9e46-49b7-8966-2a70dd51401e" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="e654dce8-a103-4877-82cc-5623cada663e" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="e6600d48-eae0-40e5-9098-fda546792bd5" class="bulleted-list"><li>Valor, puesto que la raza del protagonista puede repetirse entre las películas.</li></ul></li></ol><ol id="6ccd9472-8c21-4a50-85ca-87dbee5267a1" class="numbered-list" start="11"><li><code>subject_sex</code><ul id="d6317af6-1dea-408e-873a-3f0218820792" class="bulleted-list"><li>Categórico, puesto que es el sexo biológico de una persona </li></ul><ul id="6f39e3d4-c5c7-4254-a7b9-593b741595de" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="c55fc769-cb6d-4474-af84-0b2c04a53e06" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="bc42e095-f21e-4dff-b65f-f2c7e59883f6" class="bulleted-list"><li>No cíclico, puesto que</li></ul><ul id="004ca3f3-ce11-48e8-9703-4136c53519c4" class="bulleted-list"><li>Valor, puesto que el sexo biológico del/a protagonista puede repetirse.</li></ul></li></ol><ol id="e0c88c13-8f03-4d11-ad50-f1b0223aa8c2" class="numbered-list" start="12"><li><code>leader_actor_actress</code><ul id="a9597f8a-42dd-4df4-9c41-6a987cf0091f" class="bulleted-list"><li>Categórico, ya que corresponde a un nombre propio (no posee un orden intrínseco).</li></ul><ul id="37f4d5d5-c29b-4e2b-96d9-62c78a1a05d3" class="bulleted-list"><li>No es ni ordinal ni cuantitativo (puesto que no es ordenado).</li></ul><ul id="b28022b3-75d7-477a-9655-5309698f3e7a" class="bulleted-list"><li>No es ni secuencial ni divergente (puesto que no es ordenado).</li></ul><ul id="ff416d9f-8eee-436f-90cb-344050c2bece" class="bulleted-list"><li>No cíclico, puesto que no es un atributo temporal o recurrente.</li></ul><ul id="789f37f3-18da-4004-b1a6-f8e959d53000" class="bulleted-list"><li>Valor, puesto que un actor o actriz puede representar un rol protagónico en más de una biopic.</li></ul></li></ol><h2 id="b1c28d98-db78-4cee-b9ed-7fe171efe6f9" class="">Clasificación del <em>dataset</em></h2><p id="e31a6545-07b1-40e3-9efc-de9335416def" class="">El <em>dataset</em> contenido en el archivo <code>biopics.csv</code> es de tipo <strong>tabular </strong>o <strong>tabla</strong>, ya que contiene una lista de varios ítemes (filas) con distintos atributos (ordenados en columnas diferentes).</p><p id="638829e1-5294-432b-ba1e-4a640d2d0c27" class="">En cuanto a su dinamismo, si se considera sólo las películas estrenadas hasta el momento de la publicación de la visualización, este dataset puede clasificarse como <strong>estático.</strong> Esto se debe a que nos se incluirán datos a través de la utilización e interacción de los/as usuarios/as. Si se considera la posibilidad de agregar películas posteriores a la publicación de la visualización, entonces puede ser considerado como <strong>dinámico</strong>.</p><p id="10e06c39-6b00-4fd7-8c7d-9cc3d6b24848" class="">En cuanto a sus datos, este dataset presenta datos del tipo <strong>ítem </strong>(cada <em>biopic</em>, representada como una fila de la tabla) y del tipo <strong>atributo </strong>(información o características de cada película).</p><p id="1fdd5652-4e24-418d-b6fe-de9e71a81672" class="">
+</p></div></article></body></html>
