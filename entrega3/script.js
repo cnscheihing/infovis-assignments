@@ -1,5 +1,5 @@
 // GLOBAL VARIABLES
-const WIDTH = 800;
+const WIDTH = 1000;
 const HEIGHT = 600;
 var mapProjectionGlobal;
 const svg = d3.select("body").append("svg").attr("width", WIDTH).attr("height", HEIGHT);
@@ -28,7 +28,6 @@ const listingsDataParser = datum => ({
 const mapDrawer = data => {
   const mapProjection = d3.geoMercator().fitSize([WIDTH, HEIGHT], data);
   const geoPathGenerator = d3.geoPath().projection(mapProjection);
-
   mapG
     .selectAll("path")
     .data(data.features)
@@ -37,7 +36,6 @@ const mapDrawer = data => {
     .attr("d", geoPathGenerator)
     .attr("fill", "lightblue")
     .attr("stroke", "#FDF4EB");
-    
 }
 
 const pinsDrawer = data => {
@@ -82,34 +80,54 @@ const zoom = d3.zoom()
 globalG.call(zoom);
 
 // EXTERNAL FILES HANDLING
-d3.xml("icons/home.svg")
+const loadHomeIcon = async () => {
+  await d3.xml("icons/home.svg")
   .then(data => {
     ROOM_TYPES["Entire home/apt"] = data.getElementsByTagName("path")[0].getAttribute("d");
-  })
+  }).then()
+}
 
-d3.xml("icons/shared.svg")
+const loadSharedIcon = async () => {
+  await d3.xml("icons/shared.svg")
   .then(data => {
     ROOM_TYPES["Shared room"] = data.getElementsByTagName("path")[0].getAttribute("d");
   })
+}
 
-d3.xml("icons/hotel.svg")
+const loadHotelIcon = async () => {
+  await d3.xml("icons/hotel.svg")
   .then(data => {
     ROOM_TYPES["Hotel room"] = data.getElementsByTagName("path")[0].getAttribute("d");
   })
+}
 
-d3.xml("icons/private.svg")
+const loadPrivateIcon = async () => {
+  await d3.xml("icons/private.svg")
   .then(data => {
     ROOM_TYPES["Private room"] = data.getElementsByTagName("path")[0].getAttribute("d");
   })
+}
 
-d3.json("data/neighbourhoods.geojson")
-  .then( data => {
+const loadMap = async () => {
+  await d3.json("data/neighbourhoods.geojson")
+  .then(data => {
     mapDrawer(data);
     mapProjectionGlobal = d3.geoMercator().fitSize([WIDTH, HEIGHT], data);
   })
   .catch(error => console.log(error));
+}
 
-d3.csv("data/listings.csv", listingsDataParser)
+const loadListing = async () => {
+  await d3.csv("data/listings.csv", listingsDataParser)
   .then(data => {
     pinsDrawer(data);
   })
+  .catch(error => console.log(error));
+}
+
+loadHomeIcon();
+loadSharedIcon();
+loadHotelIcon();
+loadPrivateIcon();
+loadMap();
+loadListing();
