@@ -1,8 +1,8 @@
 // GLOBAL VARIABLES
-const WIDTH = 1000;
-const HEIGHT = 600;
+const WIDTH = 500;
+const HEIGHT = 650;
 var mapProjectionGlobal;
-const svg = d3.select("body").append("svg").attr("width", WIDTH).attr("height", HEIGHT);
+const svg = d3.select("#map-container").append("svg").attr("width", "100%").attr("height", HEIGHT);
 const globalG = svg.append("g").attr("width", WIDTH).attr("height", HEIGHT);
 const mapG = globalG.append("g");
 const pinG = globalG.append("g");
@@ -16,13 +16,27 @@ const ROOM_TYPES = {
 
 // DATA PARSER
 const listingsDataParser = datum => ({
-  // id,name,latitude,longitude,price,room_type,number_of_reviews
   ...datum,
   longitude: parseFloat(datum.longitude),
   latitude: parseFloat(datum.latitude),
   price: parseInt(datum.price),
   numberOfReviews: parseInt(datum.number_of_reviews),
 });
+
+// TOOLTIP
+d3.select("body").append("div")
+  .attr("id", "tooltip")
+  .append("p").attr("id", "name");
+
+const showTooltip = (event, d) => {
+  d3.select("#tooltip")
+  .style("left", (event.pageX) + "px")
+  .style("top", (event.pageY) + "px")
+  .transition()		
+  .duration(200)
+  .style("opacity", .9);
+  d3.select("#name").text(d.name);
+}
 
 // MAP DRAWER
 const mapDrawer = data => {
@@ -51,16 +65,23 @@ const pinsDrawer = data => {
     .attr("d", d => ROOM_TYPES[d.room_type])
     .attr("fill", d => d3.interpolateYlOrRd(colorScale(d.price)))
     .attr("transform", d => `translate(${mapProjectionGlobal([d.longitude, d.latitude])[0]} ${mapProjectionGlobal([d.longitude, d.latitude])[1]}) scale(0.1)`)
-    .on("mouseenter", function(){
-      d3.select(this).attr("fill", " #040f3c")
+    .on("mouseenter", function(event, d){
+      d3.select(this).attr("fill", " #040f3c");
+      showTooltip(event, d);
     })
     .on("mouseleave", function(_, d){
-      d3.select(this).attr("fill", d => d3.interpolateYlOrRd(colorScale(d.price)))
+      d3.select(this).attr("fill", d => d3.interpolateYlOrRd(colorScale(d.price)));
+
+      d3.select("#tooltip")
+        .transition()		
+        .duration(500)
+        .style("opacity", 0);
     });
 }
 
 // ZOOM
 const zoomHandler = (event) => {
+  // console.log(event.transform);
   mapG.attr("transform", event.transform);
   pinG.attr("transform", event.transform);
 }
