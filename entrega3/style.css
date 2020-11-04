@@ -1,8 +1,56 @@
+/* CONTAINERS */
 body {
-  background-color: #040f3c;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  color: #040f3c;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
+.centered {
+  width: 80vw;
+}
+
+.bg {
+  margin: 0 auto;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+#main-container {
+  background-color: #040f3c;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+}
+
+#info-container {
+  padding: 30px;
+}
+
+#map-container {
+  width: 100%;
+}
+
+#tooltip {
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+  padding: 0 10 0 10;
+  opacity: 0;
+  /* display: none; */
+}
+
+/* TEXT */
 #title {
-  color: #ffe189;
+  color: #fcbb57;
   font-family: "Bebas Neue", cursive;
+  font-size: 50px;
+}
+
+#subtitle {
+  /* font-family: "Source Sans Pro", sans-serif; */
+  color: #ffe189;
+  font-weight: 400;
 }

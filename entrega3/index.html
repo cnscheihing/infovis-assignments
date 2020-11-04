@@ -6,9 +6,33 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://images.emojiterra.com/twitter/v13.0/512px/1f5fa.png">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1 id="title">Entrega 3 - Infovis</h1>
+  <div id="main-container">
+    <div id="info-container">
+      <h1 id="title">Entrega 3 - Visualizacion de Informacion</h1>
+      <h2 id="subtitle">Claudio Scheihing Cuevas</h2>
+      <div id="legend-container"></div>
+    </div>
+    <div id="map-container"></div>
+  </div>
+  <div class="bg">
+    <div class="centered">
+      <h1>Decisiones de diseño</h1>
+      <ul>
+        <li>Proyección cartográfica utilizada: Utilicé una proyección cartográfica GeoMercator, debido a que la región 
+          considerada es pequeña y sus extrmos se encuentran en latitudes y longitudes muy cercanas, por lo que no se 
+          provoca una gran distorsión. Además, esta escala permite conservar la forma más utilizada y reconocida por
+          las personas, lo que facilita la ubicación del usuario.</li>
+        <li>Colores utilizados para visualizar el mapa (bordes y relleno)</li>
+        <li>Forma de realizar el zoom y pan</li>
+        <li>Tipo de marca utilizada para representar cada listado en el mapa</li>
+        <li>Escala de colores utilizada para representar el atributo anterior</li>
+      </ul>
+    </div>
+  </div>
+  <!-- <h1 id="title">Entrega 3 - Visualizacion de Informacion</h1> -->
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="script.js"></script>
 </body>
