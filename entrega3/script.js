@@ -55,7 +55,6 @@ const legendDrawer = () => {
     .attr("transform", (_, i) => `translate(0 ${i*30}) scale(0.6)`)
     .attr("fill", "white");
 
-
   d3.select("#icon-legend")
     .selectAll("text")
     .data(Object.entries(ROOM_TYPES))
@@ -66,6 +65,51 @@ const legendDrawer = () => {
     .attr("x", 40)
     .attr("fill", "white")
     .attr("font-family", "Source Sans Pro, sans-serif");
+
+  const linearGradient = legendSvg.append("g")
+    .attr("id", "color-legend")
+    .append("linearGradient")
+    .attr("id", "linear-gradient")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "100%")
+    .attr("y2", "0%");
+
+    linearGradient.append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", d3.interpolateYlOrRd(0)); //light blue
+
+    linearGradient.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", d3.interpolateYlOrRd(1)); //dark blue
+  
+  d3.select("#color-legend")
+    .append("text")
+    .text("Precio")
+    .attr("fill", "white")
+    .attr("font-family", "Source Sans Pro, sans-serif")
+    .attr("y", -30)
+    .attr("x", 25)
+    .attr("font-weight", "bold")
+    .attr("font-size", 18);
+  
+  d3.select("#color-legend").append("rect")
+    .attr("width", 300)
+    .attr("height", 20)
+    .attr("y", -20)
+    .style("fill", "url(#linear-gradient)");
+
+  const legendScale = d3.scaleLinear()
+    .domain([8, 5000])
+    .range([0, 300]);
+
+  const axisGenerator = d3.axisBottom()
+    .scale(legendScale);
+  
+  d3.select("#color-legend")
+    .call(axisGenerator)
+    .attr("color", "white")
+    .attr("transform",`translate(${0} ${180})`);
   }
 // MAP DRAWER
 const mapDrawer = data => {
@@ -111,7 +155,6 @@ const pinsDrawer = data => {
 
 // ZOOM
 const zoomHandler = (event) => {
-  // console.log(event.transform);
   mapG.attr("transform", event.transform);
   pinG.attr("transform", event.transform);
 }

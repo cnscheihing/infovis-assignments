@@ -23,14 +23,23 @@
     <div class="centered">
       <h1>Decisiones de diseño</h1>
       <ul>
-        <li>Proyección cartográfica utilizada: Utilicé una proyección cartográfica GeoMercator, debido a que la región 
-          considerada es pequeña y sus extrmos se encuentran en latitudes y longitudes muy cercanas, por lo que no se 
-          provoca una gran distorsión. Además, esta escala permite conservar la forma más utilizada y reconocida por
-          las personas, lo que facilita la ubicación del usuario.</li>
-        <li>Colores utilizados para visualizar el mapa (bordes y relleno)</li>
-        <li>Forma de realizar el zoom y pan</li>
-        <li>Tipo de marca utilizada para representar cada listado en el mapa</li>
-        <li>Escala de colores utilizada para representar el atributo anterior</li>
+        <li><strong>Proyección cartográfica utilizada</strong>: Utilicé una proyección cartográfica GeoMercator, debido a que la región 
+          representada es pequeña y sus extrmos se encuentran en latitudes y longitudes muy próximas, por lo que no se 
+          provoca una gran distorsión. Además, esta escala permite conservar la forma más reconocida por
+          la población, lo que facilita la ubicación del usuario.</li>
+        <li><strong>Colores utilizados para visualizar el mapa (bordes y relleno)</strong>: Para los colores del mapa, se utilizó
+          un celeste claro para el relleno y blanco para los bordes.</li>
+        <li><strong>Forma de realizar el zoom y pan</strong>: Se permite un zoom con una escala que va entre 1 y 12.</li>
+        <li><strong>Tipo de marca utilizada para representar cada listado en el mapa</strong>: Para mostrar la información de
+          cada listado, se utilizaron marcas distintas para los atributos. Para representar el tipo de habitación, se utilizó un
+          ícono distinto por cada uno (la simbología se encuentra a la izquierda del mapa). Para representar el precio de la
+          habitación, se utilizó el color del ícono (detallado más abajo). Para representar el atributo de nombre, se
+          escribió directamente en un tooltip (mostrado al pasar el cursor por encima). Finalmente, se representó la latitud 
+          y longitud con la posición dentro del mapa.</li>
+        <li><strong>Escala de colores utilizada para representar el atributo anterior</strong>: Para representar el precio, primero
+          se utilizó una escala logarítmica (puesto a que habían precios muy grandes). Para definir el color en base a esta escala,
+          se utilizó una escala de color en base a amarillo y rojo (d3.interpolateYlOrRd). La escala se muestra a la izquierda de la
+          pantalla.</li>
       </ul>
     </div>
   </div>
