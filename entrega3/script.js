@@ -3,7 +3,7 @@ const WIDTH = 500;
 const HEIGHT = 650;
 var mapProjectionGlobal;
 const svg = d3.select("#map-container").append("svg").attr("width", "100%").attr("height", HEIGHT);
-const globalG = svg.append("g").attr("width", WIDTH).attr("height", HEIGHT);
+const globalG = svg.append("g").attr("width", "100%").attr("height", HEIGHT);
 const mapG = globalG.append("g");
 const pinG = globalG.append("g");
 
@@ -30,14 +30,43 @@ d3.select("body").append("div")
 
 const showTooltip = (event, d) => {
   d3.select("#tooltip")
-  .style("left", (event.pageX) + "px")
-  .style("top", (event.pageY) + "px")
+  .style("left", (event.pageX) + 5 + "px")
+  .style("top", (event.pageY) + 5 + "px")
   .transition()		
   .duration(200)
+  .style("display", "flex")
   .style("opacity", .9);
   d3.select("#name").text(d.name);
 }
 
+// LEGEND
+const legendDrawer = () => {
+  const legendSvg = d3.select("#legend-container")
+    .append("svg")
+    .attr("height", 200);
+
+  legendSvg
+    .append("g").attr("id", "icon-legend")
+    .selectAll("path")
+    .data(Object.entries(ROOM_TYPES))
+    .enter()
+    .append("path")
+    .attr("d", d => d[1])
+    .attr("transform", (_, i) => `translate(0 ${i*30}) scale(0.6)`)
+    .attr("fill", "white");
+
+
+  d3.select("#icon-legend")
+    .selectAll("text")
+    .data(Object.entries(ROOM_TYPES))
+    .enter()
+    .append("text")
+    .text(d => d[0])
+    .attr("y", (_, i) => i*31 + 15)
+    .attr("x", 40)
+    .attr("fill", "white")
+    .attr("font-family", "Source Sans Pro, sans-serif");
+  }
 // MAP DRAWER
 const mapDrawer = data => {
   const mapProjection = d3.geoMercator().fitSize([WIDTH, HEIGHT], data);
@@ -75,7 +104,8 @@ const pinsDrawer = data => {
       d3.select("#tooltip")
         .transition()		
         .duration(500)
-        .style("opacity", 0);
+        .style("opacity", 0)
+        .style("display", "none");
     });
 }
 
@@ -142,6 +172,7 @@ const loadListing = async () => {
   await d3.csv("data/listings.csv", listingsDataParser)
   .then(data => {
     pinsDrawer(data);
+    legendDrawer();
   })
   .catch(error => console.log(error));
 }
