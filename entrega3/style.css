@@ -54,3 +54,7 @@ body {
   color: #ffe189;
   font-weight: 400;
 }
+
+#legend-title {
+  color: white;
+}
