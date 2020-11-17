@@ -1,21 +1,26 @@
+// Co-authored with Fernando Florenzano (professor)
 // GLOBAL VARIABLES
 const WIDTH = 500;
 const HEIGHT = 650;
 var mapProjectionGlobal;
-const svg = d3.select("#map-container").append("svg").attr("width", "100%").attr("height", HEIGHT);
+const svg = d3
+  .select("#map-container")
+  .append("svg")
+  .attr("width", "100%")
+  .attr("height", HEIGHT);
 const globalG = svg.append("g").attr("width", "100%").attr("height", HEIGHT);
 const mapG = globalG.append("g");
 const pinG = globalG.append("g");
 
 const ROOM_TYPES = {
- "Entire home/apt": "",
+  "Entire home/apt": "",
   "Private room": "",
   "Hotel room": "",
   "Shared room": "",
-}
+};
 
 // DATA PARSER
-const listingsDataParser = datum => ({
+const listingsDataParser = (datum) => ({
   ...datum,
   longitude: parseFloat(datum.longitude),
   latitude: parseFloat(datum.latitude),
@@ -24,35 +29,39 @@ const listingsDataParser = datum => ({
 });
 
 // TOOLTIP
-d3.select("body").append("div")
+d3.select("body")
+  .append("div")
   .attr("id", "tooltip")
-  .append("p").attr("id", "name");
+  .append("p")
+  .attr("id", "name");
 
 const showTooltip = (event, d) => {
   d3.select("#tooltip")
-  .style("left", (event.pageX) + 5 + "px")
-  .style("top", (event.pageY) + 5 + "px")
-  .transition()		
-  .duration(200)
-  .style("display", "flex")
-  .style("opacity", .9);
+    .style("left", event.pageX + 5 + "px")
+    .style("top", event.pageY + 5 + "px")
+    .transition()
+    .duration(200)
+    .style("display", "flex")
+    .style("opacity", 0.9);
   d3.select("#name").text(d.name);
-}
+};
 
 // LEGEND
 const legendDrawer = () => {
-  const legendSvg = d3.select("#legend-container")
+  const legendSvg = d3
+    .select("#legend-container")
     .append("svg")
     .attr("height", 200);
 
   legendSvg
-    .append("g").attr("id", "icon-legend")
+    .append("g")
+    .attr("id", "icon-legend")
     .selectAll("path")
     .data(Object.entries(ROOM_TYPES))
     .enter()
     .append("path")
-    .attr("d", d => d[1])
-    .attr("transform", (_, i) => `translate(0 ${i*30}) scale(0.6)`)
+    .attr("d", (d) => d[1])
+    .attr("transform", (_, i) => `translate(0 ${i * 30}) scale(0.6)`)
     .attr("fill", "white");
 
   d3.select("#icon-legend")
@@ -60,13 +69,14 @@ const legendDrawer = () => {
     .data(Object.entries(ROOM_TYPES))
     .enter()
     .append("text")
-    .text(d => d[0])
-    .attr("y", (_, i) => i*31 + 15)
+    .text((d) => d[0])
+    .attr("y", (_, i) => i * 31 + 15)
     .attr("x", 40)
     .attr("fill", "white")
     .attr("font-family", "Source Sans Pro, sans-serif");
 
-  const linearGradient = legendSvg.append("g")
+  const linearGradient = legendSvg
+    .append("g")
     .attr("id", "color-legend")
     .append("linearGradient")
     .attr("id", "linear-gradient")
@@ -75,14 +85,16 @@ const legendDrawer = () => {
     .attr("x2", "100%")
     .attr("y2", "0%");
 
-    linearGradient.append("stop")
+  linearGradient
+    .append("stop")
     .attr("offset", "0%")
     .attr("stop-color", d3.interpolateYlOrRd(0)); //light blue
 
-    linearGradient.append("stop")
+  linearGradient
+    .append("stop")
     .attr("offset", "100%")
     .attr("stop-color", d3.interpolateYlOrRd(1)); //dark blue
-  
+
   d3.select("#color-legend")
     .append("text")
     .text("Precio")
@@ -92,27 +104,25 @@ const legendDrawer = () => {
     .attr("x", 25)
     .attr("font-weight", "bold")
     .attr("font-size", 18);
-  
-  d3.select("#color-legend").append("rect")
+
+  d3.select("#color-legend")
+    .append("rect")
     .attr("width", 300)
     .attr("height", 20)
     .attr("y", -20)
     .style("fill", "url(#linear-gradient)");
 
-  const legendScale = d3.scaleLinear()
-    .domain([8, 5000])
-    .range([0, 300]);
+  const legendScale = d3.scaleLinear().domain([8, 5000]).range([0, 300]);
 
-  const axisGenerator = d3.axisBottom()
-    .scale(legendScale);
-  
+  const axisGenerator = d3.axisBottom().scale(legendScale);
+
   d3.select("#color-legend")
     .call(axisGenerator)
     .attr("color", "white")
-    .attr("transform",`translate(${0} ${180})`);
-  }
+    .attr("transform", `translate(${0} ${180})`);
+};
 // MAP DRAWER
-const mapDrawer = data => {
+const mapDrawer = (data) => {
   const mapProjection = d3.geoMercator().fitSize([WIDTH, HEIGHT], data);
   const geoPathGenerator = d3.geoPath().projection(mapProjection);
   mapG
@@ -123,50 +133,76 @@ const mapDrawer = data => {
     .attr("d", geoPathGenerator)
     .attr("fill", "lightblue")
     .attr("stroke", "#FDF4EB");
-}
+};
 
-const pinsDrawer = data => {
-  const colorScale = d3.scaleLog()
-    .domain([d3.min(data, d => d.price), d3.max(data, d => d.price)])
+const pinsDrawer = (data) => {
+  const colorScale = d3
+    .scaleLog()
+    .domain([d3.min(data, (d) => d.price), d3.max(data, (d) => d.price)])
     .range([0, 1]);
 
   pinG
-    .selectAll("path")
+    .selectAll("g")
     .data(data)
     .enter()
+    // A cada punto le agregué un g que lo envuelve y lo traslada a su ubicación
+    .append("g")
+    .attr(
+      "transform",
+      (d) =>
+        `translate(${mapProjectionGlobal([d.longitude, d.latitude])[0]} ${
+          mapProjectionGlobal([d.longitude, d.latitude])[1]
+        })`
+    )
     .append("path")
-    .attr("d", d => ROOM_TYPES[d.room_type])
-    .attr("fill", d => d3.interpolateYlOrRd(colorScale(d.price)))
-    .attr("transform", d => `translate(${mapProjectionGlobal([d.longitude, d.latitude])[0]} ${mapProjectionGlobal([d.longitude, d.latitude])[1]}) scale(0.1)`)
-    .on("mouseenter", function(event, d){
+    .attr("d", (d) => ROOM_TYPES[d.room_type])
+    .attr("fill", (d) => d3.interpolateYlOrRd(colorScale(d.price)))
+    // Cada punto debe escalarse por su tamaño original
+    // El translate es para que el centro de la figura cargada quede en el origen coordenado
+    // y es scale escala desde ahí.
+    .attr("transform", `scale(0.3)  translate(-20, -18.65)`)
+    .on("mouseenter", function (event, d) {
       d3.select(this).attr("fill", " #040f3c");
       showTooltip(event, d);
     })
-    .on("mouseleave", function(_, d){
-      d3.select(this).attr("fill", d => d3.interpolateYlOrRd(colorScale(d.price)));
+    .on("mouseleave", function (_, d) {
+      d3.select(this).attr("fill", (d) =>
+        d3.interpolateYlOrRd(colorScale(d.price))
+      );
 
       d3.select("#tooltip")
-        .transition()		
+        .transition()
         .duration(500)
         .style("opacity", 0)
         .style("display", "none");
     });
-}
+};
 
 // ZOOM
 const zoomHandler = (event) => {
   mapG.attr("transform", event.transform);
   pinG.attr("transform", event.transform);
-}
+  pinG
+    .selectAll("g")
+    .selectAll("path")
+    // Alteramos el escale solamente para que varie en base a la transformación
+    .attr(
+      "transform",
+      `scale(${0.3 / event.transform.k})  translate(-20, -18.65)`
+    );
 
-const zoom = d3.zoom()
+  mapG.selectAll("path").attr("stroke-width", 1 / event.transform.k);
+};
+
+const zoom = d3
+  .zoom()
   .extent([
     [0, 0],
-    [WIDTH, HEIGHT]
+    [WIDTH, HEIGHT],
   ])
   .translateExtent([
     [-200, -200],
-    [WIDTH + 200, HEIGHT + 200]
+    [WIDTH + 200, HEIGHT + 200],
   ])
   .scaleExtent([1, 12])
   .on("zoom", zoomHandler);
@@ -175,54 +211,65 @@ globalG.call(zoom);
 
 // EXTERNAL FILES HANDLING
 const loadHomeIcon = async () => {
-  await d3.xml("icons/home.svg")
-  .then(data => {
-    ROOM_TYPES["Entire home/apt"] = data.getElementsByTagName("path")[0].getAttribute("d");
-  }).then()
-}
+  await d3
+    .xml("icons/home.svg")
+    .then((data) => {
+      ROOM_TYPES["Entire home/apt"] = data
+        .getElementsByTagName("path")[0]
+        .getAttribute("d");
+    })
+    .then();
+};
 
 const loadSharedIcon = async () => {
-  await d3.xml("icons/shared.svg")
-  .then(data => {
-    ROOM_TYPES["Shared room"] = data.getElementsByTagName("path")[0].getAttribute("d");
-  })
-}
+  await d3.xml("icons/shared.svg").then((data) => {
+    ROOM_TYPES["Shared room"] = data
+      .getElementsByTagName("path")[0]
+      .getAttribute("d");
+  });
+};
 
 const loadHotelIcon = async () => {
-  await d3.xml("icons/hotel.svg")
-  .then(data => {
-    ROOM_TYPES["Hotel room"] = data.getElementsByTagName("path")[0].getAttribute("d");
-  })
-}
+  await d3.xml("icons/hotel.svg").then((data) => {
+    ROOM_TYPES["Hotel room"] = data
+      .getElementsByTagName("path")[0]
+      .getAttribute("d");
+  });
+};
 
 const loadPrivateIcon = async () => {
-  await d3.xml("icons/private.svg")
-  .then(data => {
-    ROOM_TYPES["Private room"] = data.getElementsByTagName("path")[0].getAttribute("d");
-  })
-}
+  await d3.xml("icons/private.svg").then((data) => {
+    ROOM_TYPES["Private room"] = data
+      .getElementsByTagName("path")[0]
+      .getAttribute("d");
+  });
+};
 
 const loadMap = async () => {
-  await d3.json("data/neighbourhoods.geojson")
-  .then(data => {
-    mapDrawer(data);
-    mapProjectionGlobal = d3.geoMercator().fitSize([WIDTH, HEIGHT], data);
-  })
-  .catch(error => console.log(error));
-}
+  await d3
+    .json("data/neighbourhoods.geojson")
+    .then((data) => {
+      mapDrawer(data);
+      mapProjectionGlobal = d3.geoMercator().fitSize([WIDTH, HEIGHT], data);
+      // Puse esto aquí para asegurar que se cargue después
+      loadListing();
+    })
+    .catch((error) => console.log(error));
+};
 
 const loadListing = async () => {
-  await d3.csv("data/listings.csv", listingsDataParser)
-  .then(data => {
-    pinsDrawer(data);
-    legendDrawer();
-  })
-  .catch(error => console.log(error));
-}
+  await d3
+    .csv("data/listings.csv", listingsDataParser)
+    .then((data) => {
+      pinsDrawer(data);
+      legendDrawer();
+    })
+    .catch((error) => console.log(error));
+};
 
 loadHomeIcon();
 loadSharedIcon();
 loadHotelIcon();
 loadPrivateIcon();
 loadMap();
-loadListing();
+// loadListing();
