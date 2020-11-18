@@ -5,8 +5,8 @@ const dataParser = (datum) => ({
   comunaName: datum.NOM_COMUNA,
   totalPopulation: parseInt(datum.TOTAL_PERS),
   masIndex: parseFloat(datum.INDICE_MAS),
-  depJuIndex: parseFloat(datum.INDICE_DEP_JU),
-  depVeIndex: parseFloat(datum.INDICE_DEP_VE)
+  depJuIndex: parseFloat(datum.IND_DEP_JU),
+  depVeIndex: parseFloat(datum.IND_DEP_VE)
 });
 
 const loadDataFile = async (path) => {
@@ -18,5 +18,3 @@ const loadMapFile = async (path) => {
   const mapData = await d3.json(path);
   return mapData;
 };
-
-console.log(loadMapFile("../data/comunas.geojson"));
