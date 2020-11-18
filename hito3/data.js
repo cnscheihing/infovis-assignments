@@ -6,7 +6,8 @@ const dataParser = (datum) => ({
   totalPopulation: parseInt(datum.TOTAL_PERS),
   masIndex: parseFloat(datum.INDICE_MAS),
   depJuIndex: parseFloat(datum.IND_DEP_JU),
-  depVeIndex: parseFloat(datum.IND_DEP_VE)
+  depVeIndex: parseFloat(datum.IND_DEP_VE),
+  womenRate: parseFloat(datum.MUJERES) / parseFloat(datum.TOTAL_PERS)
 });
 
 const loadDataFile = async (path) => {

@@ -1,4 +1,10 @@
+/* CONTAINERS */
 #viz-container {
   display: flex;
   flex-direction: row;
+}
+
+.tooltip {
+  position: fixed;
+  background-color: white;
 }
