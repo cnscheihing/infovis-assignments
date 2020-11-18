@@ -2,23 +2,6 @@
 const MAP_HEIGHT = 600;
 const MAP_WIDTH = 400;
 
-const zoomHandler = (event) => {
-  d3.select("#map-g").attr("transform", event.transform);
-}
-
-const zoom = d3
-  .zoom()
-  .extent([
-    [0, 0],
-    [MAP_WIDTH, MAP_HEIGHT],
-  ])
-  .translateExtent([
-    [0, 0],
-    [MAP_WIDTH, MAP_HEIGHT],
-  ])
-  .scaleExtent([1, 100])
-  .on("zoom", zoomHandler);
-
 // MAP TOOLTIP
 d3.select("body")
   .append("div")
@@ -48,6 +31,23 @@ const hideTooltip = (type) => {
 }
 
 // MAP
+const zoomMapHandler = (event) => {
+  d3.select("#map-g").attr("transform", event.transform);
+}
+
+const zoomMap = d3
+  .zoom()
+  .extent([
+    [0, 0],
+    [MAP_WIDTH, MAP_HEIGHT],
+  ])
+  .translateExtent([
+    [0, 0],
+    [MAP_WIDTH, MAP_HEIGHT],
+  ])
+  .scaleExtent([1, 100])
+  .on("zoom", zoomMapHandler);
+
 const mapDrawer = async (mapData, infoData) => {
   const mapSvg = d3.select("#map-container")
                  .append("svg")
@@ -74,15 +74,27 @@ const mapDrawer = async (mapData, infoData) => {
     .attr("fill", (d) => colorScale(infoData.filter(infoDatum => infoDatum.id == d.id)[0].totalPopulation))
     .attr("stroke", colorScale(d3.max(infoData, d => (d.totalPopulation))))
     .attr("stroke-width", 0.02)
+    .attr("selected", "false")
     .on("mouseenter", function (event, d) {
-      d3.select(this).attr("fill", " #040f3c");
+      d3.select(this).style("opacity", "0.5");
       showTooltip(event, "map", infoData.filter((infoDatum) => infoDatum.id == d.id)[0].comunaName);
     })
     .on("mouseleave", function (_, d) {
-      d3.select(this).attr("fill", (d) =>
-        colorScale(infoData.filter(infoDatum => infoDatum.id == d.id)[0].totalPopulation)
-      );
+      d3.select(this).style("opacity", "1");
       hideTooltip("map");
+    })
+    .on("click", function(_, d) {
+      if(d3.select(this).attr("selected") == "false") {
+        d3.select(this).attr("selected", "true");
+        d3.select(this).attr("fill", "red");
+        d3.select(`#p-${d.id}`).attr("fill", "red");
+      } else {
+        d3.select(this).attr("selected", "false");
+        d3.select(this).attr("fill", (d) =>
+          colorScale(infoData.filter(infoDatum => infoDatum.id == d.id)[0].totalPopulation)
+        );
+        d3.select(`#p-${d.id}`).attr("fill", "black");
+      }
     });
 
   mapSvg.append("rect")
@@ -91,11 +103,11 @@ const mapDrawer = async (mapData, infoData) => {
         .attr("stroke", "black")
         .attr("fill", "none");
 
-  mapSvg.call(zoom);
+  mapSvg.call(zoomMap);
 };
 
 // SCATTER PLOT
-
+// CONSTANTS
 const PLOT_HEIGHT = 400;
 const PLOT_WIDTH = 600;
 const PLOT_MARGIN = {
@@ -112,6 +124,25 @@ d3.select("body")
   .append("p")
   .attr("id", "plot-tooltip-name");
 
+// const plotZoom = d3
+//   .zoom()
+//   .extent([
+//     [0, 0],
+//     [width, height],
+//   ])
+//   .translateExtent([
+//     [0, 0],
+//     [width, height],
+//   ])
+//   .scaleExtent([1, 4])
+//   .on("zoom", manejadorZoom);
+
+// const plotZoomHandler = (event) => {
+//   const escalaX2 = event.transform.rescaleX(escalaX);
+//   const escalaY2 = event.transform.rescaleY(escalaY);
+//   contenedorEjeX.call(ejeX.scale(escalaX2));
+//   contenedorEjeY.call(ejeY.scale(escalaY2));
+// };
 
 const scatterPlotDrawer = async (infoData) => {
   const plotSvg = d3
@@ -157,14 +188,15 @@ const scatterPlotDrawer = async (infoData) => {
     .attr("r", 3)
     .attr("cx", (d) => scaleX(d.womenRate))
     .attr("cy", (d) => scaleY(d.depJuIndex))
+    .attr("id", (d) => `p-${d.id}`)
     .on("mouseenter", function (event, d) {
-      d3.select(this).attr("fill", " #040f3c");
+      d3.select(this).attr("opacity", "0.5");
       showTooltip(event, "plot", d.comunaName);
     })
     .on("mouseleave", function (_, d) {
-      d3.select(this).attr("fill", (d) =>
-        colorScale(d.totalPopulation)
-      );
+      d3.select(this).attr("opacity", "1");
       hideTooltip("plot");
     });
+
+  // plotSvg.call(zoom);
 };
