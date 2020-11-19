@@ -63,11 +63,15 @@ const mapDrawer = async (mapData, infoData) => {
   
   // const colorScale = d3.scaleQuantize()
   //   .domain([0, d3.max(infoData, d => (d.totalPopulation))])
-  //   .range([colorScale2(d3.max(infoData, d => (d.totalPopulation))*1/5),
-  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*2/5),
-  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*3/5),
-  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*4/5),
-  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*5/5)])
+  //   .range([colorScale2(d3.max(infoData, d => (d.totalPopulation))*1/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*2/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*3/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*4/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*5/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*2/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*3/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*4/9),
+  //     colorScale2(d3.max(infoData, d => (d.totalPopulation))*5/9)])
     
   const mapProjection = d3.geoMercator().fitSize([MAP_WIDTH, MAP_HEIGHT], mapData);
   const geoPathGenerator = d3.geoPath().projection(mapProjection);
@@ -80,6 +84,7 @@ const mapDrawer = async (mapData, infoData) => {
     .append("path")
     .attr("d", geoPathGenerator)
     .attr("fill", (d) => colorScale(infoData.filter(infoDatum => infoDatum.id == d.id)[0].totalPopulation))
+    .attr("original-color", (d) => colorScale(infoData.filter(infoDatum => infoDatum.id == d.id)[0].totalPopulation))
     .attr("stroke", colorScale(d3.max(infoData, d => (d.totalPopulation))))
     .attr("stroke-width", 0.02)
     .attr("selected", "false")
@@ -110,6 +115,53 @@ const mapDrawer = async (mapData, infoData) => {
         .attr("width", MAP_WIDTH)
         .attr("stroke", "#123b75")
         .attr("fill", "none");
+
+
+  // MAP LEGEND
+
+  const mapLegendSvg = d3.select("#map-legend-container")
+    .append("svg")
+    .attr("width", MAP_WIDTH)
+    .attr("height", 100);
+  
+  mapLegendSvg.append("text").text("Cantidad de habitantes").attr("y", 30).attr("color", "#123b75");
+
+
+  const linearGradient = mapLegendSvg
+    .append("g")
+    .attr("id", "color-legend")
+    .append("linearGradient")
+    .attr("id", "linear-gradient")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "100%")
+    .attr("y2", "0%");
+
+  linearGradient
+    .append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", d3.interpolateBlues(0)); //light blue
+
+  linearGradient
+    .append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", d3.interpolateBlues(0.8)); //dark blue
+
+  d3.select("#color-legend")
+    .append("rect")
+    .attr("width", MAP_WIDTH)
+    .attr("height", 20)
+    .attr("y", -20)
+    .style("fill", "url(#linear-gradient)");
+
+  const legendScale = d3.scaleLinear().domain([0, d3.max(infoData, d => (d.totalPopulation))]).range([0, MAP_WIDTH]);
+
+  const axisGenerator = d3.axisBottom().scale(legendScale).tickFormat(d3.format(".0s"));
+
+  d3.select("#color-legend")
+    .call(axisGenerator)
+    .attr("color", "black")
+    .attr("transform", `translate(${0} ${60})`);
 
   mapSvg.call(zoomMap);
 };
@@ -167,6 +219,7 @@ const scatterPlotDrawer = async (infoData) => {
   const pointsG = plotSvg
     .append("g")
     .attr("transform", `translate(${PLOT_MARGIN.left} ${PLOT_MARGIN.top})`)
+    .attr("id", "pointsG")
     .attr("clip-path", "url(#clip)")
   
   const xAxisG = plotSvg
@@ -225,6 +278,6 @@ const scatterPlotDrawer = async (infoData) => {
     ])
     .scaleExtent([1, 4])
     .on("zoom", plotZoomHandler);
-
+  
   plotSvg.call(plotZoom);
 };

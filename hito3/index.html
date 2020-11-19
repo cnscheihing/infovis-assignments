@@ -6,7 +6,7 @@
   <title>Hito 3 - Claudio Scheihing</title>
   <link rel="icon" href="/public/icon.png">
   
-  <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
@@ -25,24 +25,70 @@
         </div>
         <div id="plot-global-container">
           <h3>Proporción de mujeres vs. Índice de Dependencia Juvenil</h3>
-          <div id="plot-container"></div>
-          <div id="plot-interactions">
-            <button id="deselect">Borrar selección</button>
+          <div id="plot-and-legend">
+            <p id="ly">Índice de Dependencia Juvenil</p>
+            <div id="plot-container"></div>
           </div>
+          
+          <p id="lx">Proporción de mujeres</p>
         </div>
       </div>
     </div>
   </div>
   <div id="bg">
     <div class="centered">
-      <h1>Decisiones de diseño</h1>
+      <h2>Decisiones de diseño</h2>
       <ul>
-        <li><strong>Atributo elegido para representar en mapa</strong></li>
-        <li><strong>Colormap</strong></li>
-        <li><strong>Proyección cartográfica del mapa</strong></li>
-        <li><strong>Forma de realizar zoom y pan en el mapa</strong></li>
-        <li><strong>Idiom seleccionado para la segunda vista, junto a sus marcas y canales</strong></li>
-        <li><strong>Idiom de interacción para selección de comunas</strong></li>
+        <li>
+          <strong>Objetivo de la visualización</strong>: al examinar los datasets entregados, consideré interesante
+          tratar de evidenciar la existencia de alguna relación entre la cantidad de mujeres y el grado
+          de dependencia juvenil. De esta manera, la tarea asociada a la visualización será descubrir la existencia de 
+          una correlación entre la proporción de mujeres y la dependencia juvenil dentro de una comuna.
+        </li>
+        <li>
+          <strong>Atributo elegido para representar en mapa</strong>: el atributo escogido para ser representado dentro del
+          mapa es la cantidad de habitantes que viven dentro de cada comuna. Este fue escogido porque sirve de contexto
+          para la tarea antes descrita y para la información representada en el gráfico secundario (relacionado con los habitantes de cada comuna).</li>
+        <li>
+          <strong>Colormap</strong>: el colormap escogido es una escala de color ordenada y secuencial, ya que el atributo 
+          representado corresponde a un dato ordinal y secuencial (no divergente).
+        </li>
+        <li>
+          <strong>Proyección cartográfica del mapa</strong>: se utilizó una proyección cartográfica GeoMercator, debido a que una 
+          función del mapa, además de representar datos, es permitir al usuario realizar la tarea de ubicar la comuna para su 
+          posterior selección. Para realizar esta tarea, es importante que los usuarios puedan reconocer las figuras dentro del mapa,
+          y la proyección GeoMercator es la más reconocida por los chilenos (se privilegia por sobre la exactitud de las formas).
+        </li>
+        <li>
+          <strong>Forma de realizar zoom y pan en el mapa</strong>: la forma de realizar zoom y pan en el mapa es a través 
+          de los gestos nativos del navegador. Se utilizó esta interacción para minimizar la cantidad de elementos y
+          movimientos necesarios del usuario, con el fin de evitar una posible confusión.
+        </li>
+        <li>
+          <strong>Atributos seleccionados para la segunda vista</strong>: para cumplir la tarea y objetivo del primer punto, se 
+          escogieron dos datos: el índice de dependencia juvenil y la proporción de mujeres. Este último dato es producto de la 
+          una derivación de dos datos del dataset del censo. Es calculado como la división entre el total de mujeres y el total de personas 
+          de cada comuna.
+        </li>
+        <li>
+          <strong>Idiom seleccionado para la segunda vista, junto a sus marcas y canales</strong>: el idiom seleccionado para
+          representar es un gráfico de dispersión. Esta decisión fue tomada porque es un canal efectivo para visualizar
+          la relación y/o correlación entre dos variables. Además se añadió la interacción de zoom y pan por la posible oclusión 
+          generada en el cluster principal de puntos (cabe destacar que debido al tiempo, no se pudo arreglar un error asociado al clip-path,
+          por lo que hay puntos que quedan sobre los ejes al realizar zoom).
+        </li>
+        <li>
+          <strong>Idiom de interacción para selección de comunas</strong>: el idiom escogido para la selección de comunas es el click
+          sobre una comuna, junto con un tooltip para mostrar su nombre (también utilizado para la deselección). Esto se debe a que, 
+          como se mencionó anteriormente, el mapa de Chile es una forma efectiva de ubicación. Debido a que las personas reconocen una zona aproximada
+          de ubicación para cada comuna, se añadió el tooltip para poder llegar finalmente a la comuna.
+        </li>
+        <li>
+          <strong>Organización espacial de vistas coordinadas</strong>: se ubicaron ambas vistas en  un único
+          campo visual dentro de la pantalla, de manera que el usuario no tenga que hacer el scroll o alguna otra interacción para visualizar los datos.
+          Además se ubicó la vista secundaria a la derecha de la primaria, con le fin de que coincida el orden de interacción con el orden 
+          natural de lectura.
+        </li>
       </ul>
     </div>
   </div>
