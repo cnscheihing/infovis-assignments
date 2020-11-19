@@ -5,16 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hito 3 - Claudio Scheihing</title>
   <link rel="icon" href="/public/icon.png">
-  <link rel="stylesheet" href="/style.css">
+  
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="data.js"></script>
   <!-- <script src="map.js"></script> -->
 </head>
 <body>
-  <div id="viz-container">
-    <div id="map-container"></div>
-    <div id="plot-container"></div>
+  <div id="main-container">
+      <div class="centered">
+      <h1>Visualización de datos del Censo 2017</h1>
+      <div id="viz-container">
+        <div id="map-global-container">
+          <h3>Mapa de comunas de Chile</h3>
+          <div id="map-container"></div>
+          <div id="map-legend-container"></div>
+        </div>
+        <div id="plot-global-container">
+          <h3>Proporción de mujeres vs. Índice de Dependencia Juvenil</h3>
+          <div id="plot-container"></div>
+          <div id="plot-interactions">
+            <button id="deselect">Borrar selección</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <div id="bg">
+    <div class="centered">
+      <h1>Decisiones de diseño</h1>
+      <ul>
+        <li><strong>Atributo elegido para representar en mapa</strong></li>
+        <li><strong>Colormap</strong></li>
+        <li><strong>Proyección cartográfica del mapa</strong></li>
+        <li><strong>Forma de realizar zoom y pan en el mapa</strong></li>
+        <li><strong>Idiom seleccionado para la segunda vista, junto a sus marcas y canales</strong></li>
+        <li><strong>Idiom de interacción para selección de comunas</strong></li>
+      </ul>
+    </div>
+  </div>
+  
   <script src="map.js"></script>
   <script src="main.js"></script>
 </body>
