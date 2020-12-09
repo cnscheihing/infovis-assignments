@@ -1,0 +1,15 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+tr {
+  border-bottom: 5px black;
+}
+
+.td-bar {
+  width: 400px;
+}
+
+.bar-div {
+  min-height: 20px;
+}
