@@ -1,0 +1,633 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examen - Claudio Scheihing</title>
+    <link
+      rel="icon"
+      href="https://hotemoji.com/images/dl/t/bar-chart-emoji-by-twitter.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="informe.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="info-bg" class="bg">
+      <div class="centered">
+        <h1 id="info-title">Gastos e Ingresos en campañas políticas</h1>
+        <h2 id="info-course">Informe - Visualización de Información</h2>
+        <h3 id="info-name">Claudio Scheihing Cuevas</h3>
+      </div>
+    </div>
+
+    <div id="content-bg" class="bg">
+      <div class="centered">
+        <div class="section">
+          <h1>1. Caracterización de dominio</h1>
+          <div class="horizontal-line"></div>
+          <p>
+            Las elecciones de representantes políticos siempre ha sido un tema
+            controversial en nuestro país. Mucha atención se pone sobre este
+            proceso, debido a que quienes resultan electos tienen un gran
+            impacto en del desarrollo de nuestras vidas en un futuro cercano.
+          </p>
+          <p>
+            Detrás de este proceso, existe una etapa de campaña muy grande. Los
+            políticos gastan grandes cantidades de esfuerzos y dinero con el fin
+            de obtener la mayor cantidad de votos posibles.
+          </p>
+          <p>
+            Considerando las grandes desigualdades presentes en nuestro país
+            (evidenciadas tras el estallido social) y los grandes perjuicios
+            económicos que han sufrido las familias producto de la pandemia, es
+            necesario dimensionar cuánto es el gasto que realizan los partidos
+            políticos en campaña, y cómo se ven financiados.
+          </p>
+          <p>
+            Los datos presentados en la visualización fueron obtenidos desde el
+            Servicio Electoral de Chile (SERVEL) para la campaña política de las
+            elecciones de 2017 (para presidentes, senadores y diputados). En
+            esta, se visualizará cuánto dinero gastan los políticos en campañas
+            electorales, de dónde obtienen este dinero, y si existe una
+            incidencia real entre votos obtenidos y dinero gastado en campaña.
+          </p>
+          <p>
+            En relación al uso de la página, los principales usuarios de la
+            página son personas ciudadanas en Chile en edad de votar (o que
+            están prontas a hacerlo). En un contexto más amplio, se pueden
+            considerar como usuarios secundarios, personas que no estén
+            habilitadas para votar, pero que tengan un interés en la política.
+          </p>
+          <h1>2. Abstracción de tareas</h1>
+          <div class="horizontal-line"></div>
+          <p>
+            Considerando lo expuesto en el problema asociado al dominio, se
+            establecen las siguientes tareas de visualización:
+          </p>
+          <p class="task">
+            1. <b>Presentar</b> los nombres de los candidatos, sus partidos
+            políticos y sus gastos electorales para evidenciar las
+            <b>características</b> generales de los datos.
+          </p>
+          <p>
+            A modo de contexto, es necesario comenzar con la visualización
+            presentando los datos de los nombres de cada candidato, su partido
+            político y su gasto electoral. De esta manera, el usuario puede
+            entender el contexto de la visualización y evidenciar las primeras
+            características de los datos.
+          </p>
+          <p class="task">
+            2. <b>Comparar</b> el gasto realizado por partidos políticos y
+            candidatos para evidenciar <b>tendencias</b> y
+            <b>partes aisladas</b> entre sectores políticos.
+          </p>
+          <p>
+            Habiendo comprendido el contexto de la visualización y las
+            características de los datos, se vuelve relevante poder realizar
+            comparaciones, con el fin de saber quiénes son los candidatos que
+            más gastan en campañas electorales. Además, se puede evidenciar
+            alguna tendencia según el sector político.
+          </p>
+          <p class="task">
+            3. <b>Descubrir</b> quiénes son las personas que más aportan a las candidaturas
+            de la clase política, con el fin de entender los <b>valores individuales</b> ya
+            posibles <b>partes aisladas <i>(outliers)</i></b>.
+          </p>
+          <p>
+            Considerando el contexto político y social que estamos viviendo, en
+            conjunto con los recientes casos de corrupción, es relevante saber
+            de dónde proviene el dinero utilizado por los políticos. En ese
+            contexto, es interesante identificar quiénes son las personas que
+            más aportan a los políticos y cuál es su conexión con ellos.
+          </p>
+          <p class="task">
+            4. <b>Descubrir</b> la existencia de una <b>correlación</b> entre el
+            gasto en campaña y la cantidad de votos obtenidos por cada
+            candidato.
+          </p>
+          <p>
+            Finalmente, para justificar el gasto de dinero en campañas por parte
+            de partidos y candidatos políticos, es necesario descubrir si es que
+            este gasto tiene una incidencia en la cantidad de votos recibidos.
+            Dicho de otro modo, es importante evidenciar si es que más gasto en
+            campañas políticas generan mejores resultados en las votaciones.
+          </p>
+          <br />
+
+          <div class="section">
+            <h1>3. Abstracción de datos</h1>
+            <div class="horizontal-line"></div>
+            <h2>Clasificación de <i>datasets</i></h2>
+            <h3 class="collection-title">
+              Dataset 1: Información de candidatos
+            </h3>
+            <table class="collection-content">
+              <thead>
+                <tr>
+                  <th>
+                    Nombre candidato
+                  </th>
+                  <th>
+                    Partido político
+                  </th>
+                  <th>
+                    Votos obtenidos
+                  </th>
+                  <th>
+                    Ingresos
+                  </th>
+                  <th>
+                    Gastos
+                  </th>
+                  <th>
+                    Circunscripción
+                  </th>
+                  <th>
+                    Electo
+                  </th>
+                  <th>
+                    Cargo
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="c09696e4-286f-4178-90f9-d458b972a940">
+                  <td class="cell-title">
+                    Sebastián Piñera
+                  </td>
+                  <td class="cell-ukqE">
+                    <span class="selected-value select-value-color-green"
+                      >Renovación Nacional</span
+                    >
+                  </td>
+                  <td class="cell-gyi?">1000000</td>
+                  <td class="cell-Q\Lt">20000</td>
+                  <td class="cell-dUfb">300000</td>
+                  <td class="cell-z:iy">Chile</td>
+                  <td class="cell-kiBA">Sí</td>
+                  <td class="cell-FH@Q">Presidente</td>
+                </tr>
+                <tr id="2aa95700-ec43-4e50-9a74-2890c914b872">
+                  <td class="cell-title">
+                    Carolina Goic
+                  </td>
+                  <td class="cell-ukqE">
+                    <span class="selected-value select-value-color-gray"
+                      >Democracia Cristiana</span
+                    >
+                  </td>
+                  <td class="cell-gyi?">25000</td>
+                  <td class="cell-Q\Lt">40000</td>
+                  <td class="cell-dUfb">350000</td>
+                  <td class="cell-z:iy">Chile</td>
+                  <td class="cell-kiBA">No</td>
+                  <td class="cell-FH@Q">Presidente</td>
+                </tr>
+                <tr id="49c9ae82-63be-412c-851f-3300b7b3931d">
+                  <td class="cell-title">
+                    Raúl Florcita Alarcón
+                  </td>
+                  <td class="cell-ukqE">
+                    <span class="selected-value select-value-color-purple"
+                      >Partido Humanista</span
+                    >
+                  </td>
+                  <td class="cell-gyi?">3000</td>
+                  <td class="cell-Q\Lt">4500</td>
+                  <td class="cell-dUfb">4500</td>
+                  <td class="cell-z:iy">44</td>
+                  <td class="cell-kiBA">Sí</td>
+                  <td class="cell-FH@Q">Diputado</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              Este <em>dataset</em> es de tipo <strong>tabular o tabla</strong>,
+              ya que contiene una lista de varios ítemes (filas) con distintos
+              atributos (ordenados en columnas diferentes). En cuanto a su
+              dinamismo, este <em>dataset</em> puede ser considerado como
+              <strong>estático</strong>. Esto se debe a que no sólo se
+              utilizarán datos de las elecciones del 2017, y no se generarán
+              datos a través de las interacciones de los usuarios.
+            </p>
+            <p>
+              Analizando los datos singulares, se tiene que presenta datos del
+              tipo
+              <strong>ítem</strong> (cada postulación a un cargo), los cuales
+              presentan distintos datos del tipo
+              <strong>atributo </strong>(características de cada candidatura).
+              Por otro lado, este <em>dataset</em> posee un dato llave, dado por
+              el nombre de cada candidato.
+            </p>
+            <h3>Dataset 2: Flujo de dinero entre aportantes y candidatos</h3>
+            <table class="collection-content">
+              <thead>
+                <tr>
+                  <th>
+                    Nombre aportante
+                  </th>
+                  <th>
+                    Nombre receptor
+                  </th>
+                  <th>
+                    Monto
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="6ecc66c4-28c0-4ac6-8ff3-8620f2359bcc">
+                  <td class="cell-title">
+                    Alejandro Guillier
+                  </td>
+                  <td class="cell-PxMX">Alejandro Guillier</td>
+                  <td class="cell-hUF^">150000000</td>
+                </tr>
+                <tr id="87afbb4c-6932-4a23-9d01-a852a53435d9">
+                  <td class="cell-title">
+                    Nelson Pérez Retamal</a
+                    >
+                  </td>
+                  <td class="cell-PxMX">Sebastián Piñera</td>
+                  <td class="cell-hUF^">225000000000</td>
+                </tr>
+                <tr id="6700fff7-6fd5-41eb-9020-1108b0525beb">
+                  <td class="cell-title">
+                    Nelson Pérez Retamal
+                  </td>
+                  <td class="cell-PxMX">Felipe Kast</td>
+                  <td class="cell-hUF^">2300000000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Por otro lado, este <em>dataset</em> puede ser considerado de tipo
+            <strong>red</strong>, ya que está compuesto por datos de tipo
+            <strong>enlace</strong>, los cuales relacionan datos de tipo
+            <strong>item </strong>(presentados en el <em>dataset</em> anterior).
+            Debido a las mismas razones que el conjunto de datos anterior, este
+            <em>dataset</em> puede ser considerado como
+            <strong>estático</strong>.
+          </p>
+          <p>
+            Como se mencionó anteriormente, este <em>dataset</em> posee datos
+            del tipo <strong>enlace</strong>, los cuales posee un
+            <strong>atributo </strong>(el monto aportado). Por otro lado, este
+            <em>dataset</em> no posee atributos llave. Sólo el par
+            <code>Nombre aportante</code> y <code>Nombre receptor</code> puede
+            ser utilizado como llave.
+          </p>
+          <!-- <pre id="4eab1cc1-56e2-4943-8241-3050894abd3d" class="code"><code>{
+            nombre_candidato: 
+              {
+                total: monto,
+                categoria_1: monto,
+                categoria_2: monto,
+              },
+            &quot;Sebastian Piñera&quot;: 
+              {
+                total: 2000100000,
+                publicidad: 10000,
+                impresiones: 200000000,
+              },
+          }</code></pre> -->
+
+          <h2>Clasificación de datos (atributos)</h2>
+          <h3>Dataset 1: Información de candidatos</h3>
+          <p>
+            Observando los distintos datos del primer <i>dataset</i> se clasifican los
+            siguientes atributos de cada ítem dentro de la tabla:
+          </p>
+          <div class="row">
+            <div class="attr-container">
+              <p class="code">nombre candidato</p>
+              <ul>
+                <li>
+                  Categórico, ya que el nombre de cada candidato no posee un
+                  orden intrínseco.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+            <div class="attr-container">
+              <p class="code">Partido político</p>
+              <ul>
+                <li>
+                  Categórico, ya que el nombre de un partido político no posee
+                  un orden intrínseco.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>No cíclico, puesto que no es un atriburo recurrente.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="attr-container">
+              <p class="code">Votos obtenidos</p>
+              <ul>
+                <li>
+                  Ordenado, ya que la cantidad de votos obtenidos poseen un
+                  orden intrínseco con el que pueden ser manejados.
+                </li>
+                <li>
+                  Cuantitativo, ya que hay comparaciones y operaciones
+                  aritméticas exactas entre los datos.
+                </li>
+                <li>
+                  Secuencial, ya que los datos crecen en un solo sentido (con un
+                  solo significado relacionado a la escala). En este caso
+                  particular, parten en cero y crecen hacia el infinito.
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+            <div class="attr-container">
+              <p class="code">Ingresos</p>
+              <ul>
+                <li>
+                  Ordenado, ya que la cantidad de dinero obtenido por un
+                  candidato posee un orden intrínseco con el que pueden ser
+                  analizado.
+                </li>
+                <li>
+                  Cuantitativo, ya que hay comparaciones y operaciones
+                  aritméticas exactas entre los datos.
+                </li>
+                <li>
+                  Secuencial, ya que los datos crecen en un solo sentido (con un
+                  solo significado relacionado a su escala). En este caso
+                  particular, pueden partir en cero y crecen hacia el infinito.
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="attr-container">
+              <p class="code">Gastos</p>
+              <ul>
+                <li>
+                  Ordenado, ya que la cantidad de dinero utilizado por un
+                  candidato posee un orden intrínseco con el que pueden ser
+                  analizado.
+                </li>
+                <li>
+                  Cuantitativo, ya que hay comparaciones y operaciones
+                  aritméticas exactas entre los datos.
+                </li>
+                <li>
+                  Secuencial, ya que los datos crecen en un solo sentido (con un
+                  solo significado relacionado a su escala). En este caso
+                  particular, pueden partir en cero y crecen hacia el infinito.
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+            <div class="attr-container">
+              <p class="code">Circunscripción</p>
+              <ul>
+                <li>
+                  Categórico, ya que la circunscripción a la que pertenece la
+                  candidatura no posee un orden intrínseco.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="attr-container">
+              <p class="code">Electo</p>
+              <ul>
+                <li>
+                  Categórico, ya que el resultado de su candidatura (electo o
+                  no) no posee un orden intrínseco.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+            <div class="attr-container">
+              <p class="code">Cargo</p>
+              <ul>
+                <li>
+                  Categórico, ya que los posibles cargos ocupados ocupados por
+                  candidatos no pueden ser inherentemente ordenados.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <h3>Dataset 2: Flujo de dinero entre aportantes y candidatos</h3>
+          <p>
+            Observando los distintos datos del segundo <i>dataset</i> se clasifican los
+            siguientes atributos de cada ítem dentro de la tabla:
+          </p>
+          <div class="row">
+            <div class="attr-container">
+              <p class="code">Nombre aportante</p>
+              <ul>
+                <li>
+                  Categórico, ya que los nombres de la personas aportantes no
+                  poseen un orden intrínseco.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+            <div class="attr-container">
+              <p class="code">Nombre receptor</p>
+              <ul>
+                <li>
+                  Categórico, ya que los nombres de la personas que reciben la
+                  donación no poseen un orden intrínseco.
+                </li>
+                <li>
+                  No es ni ordinal ni cuantitativo (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No es ni secuencial ni divergente (puesto que no es un dato
+                  ordenado).
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="attr-container">
+              <p class="code">Monto</p>
+              <ul>
+                <li>
+                  Ordenado, ya que la cantidad de dinero donada por una persona
+                  a otra posee un orden intrínseco con el que pueden ser
+                  analizado.
+                </li>
+                <li>
+                  Cuantitativo, ya que hay comparaciones y operaciones
+                  aritméticas exactas entre los datos.
+                </li>
+                <li>
+                  Secuencial, ya que los datos crecen en un solo sentido (con un
+                  solo significado relacionado a su escala). En este caso
+                  particular, pueden partir en cero y crecen hacia el infinito.
+                </li>
+                <li>
+                  No cíclico, puesto que no es un atributo temporal o
+                  recurrente.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h2>Codificaciones visuales y de interacción</i></h2>
+        <p>Para las tareas mencionadas anteriormente, se definen las siguientes codificaciones visuales:</p>
+        <h3>Tareas 1 y 2</h3>
+          <ul>
+            <li>
+              <b>Gráfico de barras con gasto electoral:</b> para realizar las tareas 1 y 2 se utilizará un gráfico
+              de barras, en el que cada una de las barras representa el gasto electoral. Esto permite presentar 
+              la información y realizar comparaciones de forma efectiva. Debido a la cantidad de datos y la 
+              distribución espacial, se utilizará gráfico con barras horizontales, implementadas en forma de 
+              tabla.
+            </li>
+            <li>
+              <b><i>Dropdown</i> con tipo de cargo</b>: debido a que en general las candidaturas para cargos más
+              elevados gastan más dinero, se podrá seleccionar un tipo de cargo para poder realizar comparaciones
+              más representativas.
+            </li>
+
+          </ul>
+        <h3>Tarea 3</h3>
+        <ul>
+          <li>
+            <b><i>Sankey diagram</i> que muestre los flujos de dinero</b>: para representar el flujo de
+            dinero en la red presente en el <i>dataset</i> 2, se utilizará un diagrama <i>sankey</i> 
+            (<a href="https://github.com/d3/d3-sankey">referencia</a>). Este tendrá dos columnas; la del lado
+            izquierdo corresponderá a los aportantes, mientras que la opuesta corresponderá a los candidatos
+            que reciben dicho monto. El ancho del flujo corresponderá a la cantidad de dinero donado. Esta
+            codificación es efectiva a la hora de visualizar redes, cuyos enlaces poseen pesos y representan
+            flujos. 
+        </li>
+        </ul>
+        <h3>Tarea 4</h3>
+        <ul>
+          <li>
+            <b>Gráfico de dispersión</b>: para poder establecer la existencia de una correlación entre la cantidad
+            de dinero gastada en campaña y la cantidad de votos obtenidos por cada candidato, se implementará un
+            gráfico de dispersión. Cada punto del gráfico representará un candidato. Con el fin de poder 
+            visualizar los datos singulares, se establecerá la interacción de <i>zoom</i> y <i>panning</i>.
+          </li>
+        </ul>
+        
+        <h3>Codificaciones transversales</h3>
+        <p>
+          Además de las codificaciones mencionadas para cada una de las tareas, se definieron codificaciones
+          transversales a todas ellas. Estas se utilizan para facilitar el desarrollo de las tareas, entregar
+          contexto para los datos y generar consistencia entre las distintas visualizaciones. Se tienen las
+          siguientes codificaciones:
+        </p>
+        <ul>
+          <li>
+            <b><i>Colormap</i> categórico según el partido político</b>: se utilizará un <i>colormap</i>
+            que represente el partido político al que pertenece el candidato. Esto permitirá facilitar las
+            comparaciones antes descritas (respecto al sector político y entre partidos). Además, permite
+            generar constancia visual entre las distintas visualiciones.
+          </li>
+          <li>
+            <b><i>Tooltip</i> con información del candidato</b>: con el fin de entregar más información
+            y contexto, se genera un <i>tooltip</i> con datos propios del candidato, a saber: nombre, partido
+            político, cantidad de votos obtenidos, circunscripción y si resultó electo o no. Este será implementado
+            con la interacción de <i>hover</i> sobre los siguientes elementos: barras en el gráfico de barras, nodo
+            en el <i>sankey diagram</i> y puntos en el gráfico de dispersión.
+          </li>
+        </ul>
+
+
+      </div>
+
+    </div>
+    <div id="footer-bg" class="bg">
+      <p id="footer-title">Informe: Gastos e Ingresos en Campañas Políticas</p>
+      <p id="footer-name">Claudio Scheihing Cuevas</p>
+    </div>
+  </body>
+</html>
