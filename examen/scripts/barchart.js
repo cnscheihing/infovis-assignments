@@ -2,7 +2,7 @@
 const table = d3.select("#barchart-container").append("table");
 
 const getPositions = (tabularData) => {
-  return ["TODOS", ...new Set(tabularData.map((d) => d.cargo))];
+  return [...new Set(tabularData.map((d) => d.cargo)), "TODOS"];
 } 
 
 const dropdownFilter = (dataArray, value) => {
@@ -49,14 +49,14 @@ const barchartDrawer = async (tabularData) => {
     
       tr.append("td")
         .attr("class", "td-spending")
-        .text((d) => d.gastos);
-    
+        .text((d) => d3.format(".0d")(d.gastos/100000) + "M");
+        
       tr.append("td")
         .attr("class", "td-bar")
         .append("div")
         .attr("class", "bar-div")
         .style("width", "0%")
-        .style("background-color", "teal")
+        // .style("background-color", )
         .transition()
         .duration(500)
         .style("width", (d) => barScale(d.gastos));
@@ -64,11 +64,11 @@ const barchartDrawer = async (tabularData) => {
 
   const tdUpdate = (selection) => {
     selection.select(".td-name").text((d) => d.nombre);
-    selection.select(".td-spending").text((d) => d.gastos);
+    selection.select(".td-spending").text((d) => d3.format(",.0d")(d.gastos/100000) + "M");
     selection.select(".td-bar")
       .select(".bar-div")
       .style("width", "0%")
-      .style("background-color", "red")
+      // .style("background-color", "red")
       .transition()
       .duration(500)
       .style("width", (d) => barScale(d.gastos));
