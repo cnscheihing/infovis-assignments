@@ -1,4 +1,5 @@
 // Basado en: https://bl.ocks.org/llad/3918637
+
 const table = d3.select("#barchart-container").append("table");
 
 const getPositions = (tabularData) => {
@@ -29,7 +30,14 @@ const dropdownConstructor = (tabularData) => {
 
 const barchartDrawer = async (tabularData) => {
   tabularData.sort(function(a, b) {return d3.descending(a.gastos, b.gastos)});
+  console.log([...new Set(tabularData.map((d) => d.partido))]);
 
+  const coalitions = [...new Set(tabularData.map((d) => d.coalicion))];
+  
+  const colormap = d3.scaleOrdinal()
+      .domain(coalitions)
+      .range(d3.schemeTableau10);
+      
   const maxSpendings = d3.max(tabularData, (d) => d.gastos);
 
   const table = d3.select("#barchart-table");
@@ -56,10 +64,10 @@ const barchartDrawer = async (tabularData) => {
         .append("div")
         .attr("class", "bar-div")
         .style("width", "0%")
-        // .style("background-color", )
+        .style("background-color", (d) => colormap(d.coalicion))
         .transition()
         .duration(500)
-        .style("width", (d) => barScale(d.gastos));
+        .style("width", (d) => barScale(d.gastos));        
   }
 
   const tdUpdate = (selection) => {
@@ -68,7 +76,7 @@ const barchartDrawer = async (tabularData) => {
     selection.select(".td-bar")
       .select(".bar-div")
       .style("width", "0%")
-      // .style("background-color", "red")
+      .style("background-color", (d) => colormap(d.coalicion))
       .transition()
       .duration(500)
       .style("width", (d) => barScale(d.gastos));
