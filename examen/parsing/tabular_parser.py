@@ -24,15 +24,15 @@ def get_coalicion(partido):
 def spending_row_parser(data, row_dict):
     if row["NOMBRE_DEL_CANDIDATO"] not in data.keys():
         data[row["NOMBRE_DEL_CANDIDATO"]] = {
-            "nombre": row["NOMBRE_DEL_CANDIDATO"],
+            "nombre": row["NOMBRE_DEL_CANDIDATO"].lower().title(),
             "gastos": int(row["MONTO"].strip().replace(",", "")),
-            "cargo": row["\ufeffeleccion"],
-            "region": row["REGION"],
-            "territorio": row["TERRITORIO_ELECTORAL"],
-            "partido": row["NOMBRE_PARTIDO"],
+            "cargo": row["\ufeffeleccion"].lower().title(),
+            "region": row["REGION"].lower().title(),
+            "territorio": row["TERRITORIO_ELECTORAL"].lower().title(),
+            "partido": row["NOMBRE_PARTIDO"].lower().title(),
             "votos": 0,
             "ingresos": 0,
-            "coalicion": get_coalicion(row["NOMBRE_PARTIDO"])
+            "coalicion": get_coalicion(row["NOMBRE_PARTIDO"]).lower().title()
         }
     else:
         data[row["NOMBRE_DEL_CANDIDATO"]

@@ -16,10 +16,10 @@ h1 {
   font-size: 30px;
 }
 
-p {
+/* p {
   text-align: justify;
   font-size: large;
-}
+} */
 
 li {
   text-align: justify;
@@ -30,6 +30,22 @@ li {
   width: 100%;
   border: 1px solid black;
 } */
+
+#tooltip {
+  /* position: fixed; */
+  /* background-color: white; */
+  background-color: #3626a7;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: white;
+  display: none;
+  flex-direction: column;
+}
+
+#tooltip p {
+  margin: 5px;
+}
 
 .bg {
   margin: 0 auto;
@@ -127,6 +143,11 @@ li {
 #footer-name {
   margin-right: 40px;
   color: var(--text-secondary);
+}
+
+#tt-name {
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 /* RWD */

@@ -66,6 +66,14 @@
         <div id="barchart-container">
           <select name="position-filter" id="position-filter"></select>
           <table id="barchart-table"></table>
+          <div id="tooltip">
+            <p id="tt-name"></p>
+            <p id="tt-position"></p>
+            <p id="tt-territory"></p>
+            <p id="tt-party"></p>
+            <p id="tt-coalition"></p>
+          </div>
+          <div id="colormap-legend"></div>
         </div>
         <h1>Aportes y donaciones de terceros a candidatos políticos</h1>
         <p>
@@ -78,10 +86,10 @@
       </div>
     </div>
     <script src="scripts/main.js"></script>
-    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
-    <script src="scripts/sankey.js"></script>
+    <!-- <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+    <script src="scripts/sankey.js"></script> -->
     <div id="footer-bg" class="bg">
-      <p id="footer-title">Informe: Gastos e Ingresos en Campañas Políticas</p>
+      <p id="footer-title">Examen: Gastos e Ingresos en Campañas Políticas</p>
       <p id="footer-name">Claudio Scheihing Cuevas</p>
     </div>
   </body>
