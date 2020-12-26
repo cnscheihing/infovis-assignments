@@ -4,6 +4,7 @@ const main = async () => {
   const presidentData = tabularData.filter((data) => data.cargo === "Presidente");
   await dropdownConstructor(tabularData);
   await barchartDrawer(presidentData);
+  sankeyDrawer("Candidato: Sebastian Pinera Echenique");
 }
 
 main();

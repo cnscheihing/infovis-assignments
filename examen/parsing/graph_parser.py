@@ -46,8 +46,8 @@ def process_row(data, row_dict, minimum):
         return
     if (row_dict["source"], row_dict["\ufefftarget"]) not in data.keys():
         data[(row_dict["source"], row_dict["\ufefftarget"])] = {
-            "source": "Aportante: " + row_dict["source"],
-            "target": "Candidato: " + row_dict["\ufefftarget"],
+            "source": "Aportante: " + row_dict["source"].lower().title(),
+            "target": "Candidato: " + row_dict["\ufefftarget"].lower().title(),
             "value": int(row_dict["value"])
         }
     else:
@@ -79,9 +79,9 @@ with open('ingresos_conexiones.csv', newline='',  encoding='utf-8') as csvfile:
 
     for row in reader:
         # print(row)
-        process_row(data, row, 10000000)
+        process_row(data, row, 1000000)
 
-with open('network_data_10000000_name.csv', 'w',  encoding='utf-8') as csvfile:
+with open('network_data_1000000_name.csv', 'w',  encoding='utf-8') as csvfile:
     headers = ["source", "target", "value"]
     writer = csv.DictWriter(csvfile, fieldnames=headers)
     writer.writeheader()

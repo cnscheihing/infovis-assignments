@@ -31,7 +31,6 @@ const dropdownConstructor = (tabularData) => {
 
 const barchartDrawer = async (tabularData) => {
   tabularData.sort(function(a, b) {return d3.descending(a.gastos, b.gastos)});
-  console.log([...new Set(tabularData.map((d) => d.partido))]);
 
   const coalitions = [...new Set(tabularData.map((d) => d.coalicion))].sort();
   
@@ -79,7 +78,12 @@ const barchartDrawer = async (tabularData) => {
 
       tr.append("td")
       .attr("class", "td-name")
-      .text((d) => d.nombre);
+      .text((d) => d.nombre)
+      .on("click", function(_, d) {
+        console.log("lodash");
+        console.log(d);
+        sankeyDrawer(`Candidato: ${d.nombre}`);
+      });
     
       tr.append("td")
         .attr("class", "td-spending")
